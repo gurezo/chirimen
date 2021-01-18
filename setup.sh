@@ -58,8 +58,9 @@ sudo apt-get -y full-upgrade
 sudo apt-get -y update
 sudo apt-get -y full-upgrade
 
-# npm v14.x 系セットアップ￥
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+# npm v14.x 系セットアップ
+curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+# curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 
 # 各種ツールをインストール
 sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs apache2 vim emacs libnss3-tools
