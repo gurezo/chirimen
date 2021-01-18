@@ -72,7 +72,8 @@ sudo apt-get -y autoreclean
 # sudo npm install -g npm 
 
 # VS code のインストール
-wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-armhf'
+# wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-armhf'
+wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64'
 sudo apt install -y /tmp/code.deb
 
 
