@@ -52,17 +52,23 @@ sudo apt-get install at-spi2-core
 
 # update
 sudo apt-get -y update
-sudo apt-get -y upgrade
+sudo apt-get -y full-upgrade
 
 # raspiはupgrade失敗しやすいので念の為2回
 sudo apt-get -y update
-sudo apt-get -y upgrade
+sudo apt-get -y full-upgrade
+
+# npm v14.x 系セットアップ￥
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 
 # 各種ツールをインストール
-sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs npm apache2 vim emacs libnss3-tools
+sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs apache2 vim emacs libnss3-tools
 # インストール失敗しやすいので2回
-sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs npm apache2 vim emacs libnss3-tools
+sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs apache2 vim emacs libnss3-tools
 sudo apt-get -y autoremove
+
+# npm アップデート
+sudo npm install -g npm 
 
 # VS code のインストール
 wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-armhf'
