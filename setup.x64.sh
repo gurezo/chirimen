@@ -30,6 +30,7 @@ sudo sh -c "cat << EOF > /etc/xdg/lxsession/LXDE-pi/autostart
 @/usr/bin/chromium-browser https://localhost/top --enable-experimental-web-platform-features
 EOF"
 
+# FIXME: source.list 要修正
 # aptをmirrorで指定
 # sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
 # http://ftp.jaist.ac.jp/raspbian/
