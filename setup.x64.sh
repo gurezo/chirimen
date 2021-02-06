@@ -75,10 +75,8 @@ sudo npm install -g npm
 
 # 各種ツールをインストール
 sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc apache2 vim emacs libnss3-tools
-# インストール失敗しやすいので2回
-sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc apache2 vim emacs libnss3-tools
 sudo apt-get -y autoremove
-sudo apt-get -y autoreclean
+sudo apt-get -y autoclean
 
 # VS code のインストール
 wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64'
@@ -163,6 +161,7 @@ pcmanfm --set-wallpaper /home/pi/_gc/wallpaper/wallpaper-720P.png
 
 
 # gc設定
+# FIXME: chromium-browser: コマンドが見つかりません
 chromium-browser &
 cd /home/pi/
 if [ ! -f /home/pi/gc.zip ]; then
