@@ -31,18 +31,18 @@ sudo sh -c "cat << EOF > /etc/xdg/lxsession/LXDE-pi/autostart
 EOF"
 
 # aptをmirrorで指定
-sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
-http://ftp.jaist.ac.jp/raspbian/
-http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/
-http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/
-http://raspbian.raspberrypi.org/raspbian/
-EOF"
-if [ ! -f /etc/apt/sources.list.orig ]; then
-    sudo cp /etc/apt/sources.list /etc/apt/sources.list.orig
-fi
-sudo sh -c "cat << EOF > /etc/apt/sources.list
-deb mirror+file:/etc/apt/mirrors.txt buster main contrib non-free rpi
-EOF"
+# sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
+# http://ftp.jaist.ac.jp/raspbian/
+# http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/
+# http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/
+# http://raspbian.raspberrypi.org/raspbian/
+# EOF"
+# if [ ! -f /etc/apt/sources.list.orig ]; then
+#     sudo cp /etc/apt/sources.list /etc/apt/sources.list.orig
+# fi
+# sudo sh -c "cat << EOF > /etc/apt/sources.list
+# deb mirror+file:/etc/apt/mirrors.txt buster main contrib non-free rpi
+# EOF"
 sudo apt-get update
 
 # upgradeを保留に変更
