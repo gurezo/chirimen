@@ -2,7 +2,7 @@
 
 # update
 sudo apt-get -y update
-sudo apt-get -y full-upgrade
+sudo apt-get -y upgrade
 
 # npm セットアップ
 # https://github.com/nodesource/distributions 参照

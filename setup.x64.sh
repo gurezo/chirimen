@@ -169,7 +169,7 @@ if [ ! -f /home/pi/gc.zip ]; then
 fi
 # chromiumの起動待ちダウンロード
 if [ ! -f /home/pi/arduino-1.8.13-linuxarm.tar.xz ]; then
-    wget https://downloads.arduino.cc/arduino-1.8.13-linuxarm.tar.xz
+    wget https://downloads.arduino.cc/arduino-1.8.13-linuxaarch64.tar.xz
 fi
 if [ ! -d /home/pi/Desktop/gc/ ]; then
     unzip ./gc.zip -d /home/pi/Desktop
