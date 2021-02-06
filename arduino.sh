@@ -8,7 +8,7 @@ wget https://downloads.arduino.cc/arduino-1.8.13-linuxaarch64.tar.xz
 
 
 cd /home/pi/
-mkdir /home/pi/Applications/
+# mkdir /home/pi/Applications/
 if [ ! -d /home/pi/Applications/arduino-1.8.13/ ]; then
     tar xvf arduino-1.8.13-linuxaarch64.tar.xz
     mv arduino-1.8.13 /home/pi/Applications/
