@@ -175,7 +175,8 @@ if [ ! -d /home/pi/Desktop/gc/ ]; then
     unzip ./gc.zip -d /home/pi/Desktop
 fi
 # chromiumの起動待ち
-sleep 120s
+# arduinoのセットアップが失敗したので、変更 120 => 180
+sleep 180s 
 
 # Apache設定
 if [ ! -f /etc/apache2/sites-available/000-default.conf.orig ]; then
