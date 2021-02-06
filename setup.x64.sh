@@ -168,7 +168,7 @@ if [ ! -f /home/pi/gc.zip ]; then
     wget https://r.chirimen.org/gc.zip
 fi
 # chromiumの起動待ちダウンロード
-if [ ! -f /home/pi/arduino-1.8.13-linuxarm.tar.xz ]; then
+if [ ! -f /home/pi/arduino-1.8.13-linuxaarch64.tar.xz ]; then
     wget https://downloads.arduino.cc/arduino-1.8.13-linuxaarch64.tar.xz
 fi
 if [ ! -d /home/pi/Desktop/gc/ ]; then
@@ -307,9 +307,9 @@ done
 # FIXME: arduinoのセットアップが失敗したので、要調査
 # Arduino IDE 追加
 cd /home/pi/
-mkdir /home/pi/Applications/
+# mkdir /home/pi/Applications/
 if [ ! -d /home/pi/Applications/arduino-1.8.13/ ]; then
-    tar xvf arduino-1.8.13-linuxarm.tar.xz
+    tar xvf arduino-1.8.13-linuxaarch64.tar.xz
     mv arduino-1.8.13 /home/pi/Applications/
 fi
 cd /home/pi/Applications/
@@ -318,7 +318,7 @@ cd /home/pi/Applications/
 sudo ln -s arduino-1.8.13 arduino
 cd /home/pi/Applications/arduino/
 ./install.sh
-rm -f /home/pi/arduino-1.8.13-linuxarm.tar.xz
+rm -f /home/pi/arduino-1.8.13-linuxaarch64.tar.xz
 cd /home/pi/
 
 # upgradeを保留を解除
