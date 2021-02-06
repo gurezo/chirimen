@@ -155,8 +155,9 @@ if [ $? = 1 ]; then
     echo "@reboot sudo -u pi /home/pi/_gc/srv/startup.sh" | crontab
 fi
 ln -s /home/pi/_gc/srv/reset.sh /home/pi/Desktop/reset.sh
-mkdir /home/pi/.config/chromium/
-mkdir /home/pi/.config/chromium/Default/
+# 64bit だと不要
+# mkdir /home/pi/.config/chromium/
+# mkdir /home/pi/.config/chromium/Default/
 cp /home/pi/_gc/bookmark/Bookmarks /home/pi/.config/chromium/Default/Bookmarks
 pcmanfm --set-wallpaper /home/pi/_gc/wallpaper/wallpaper-720P.png
 
@@ -313,7 +314,9 @@ if [ ! -d /home/pi/Applications/arduino-1.8.13/ ]; then
     mv arduino-1.8.13 /home/pi/Applications/
 fi
 cd /home/pi/Applications/
-ln -s arduino-1.8.13 arduino
+# FIXME: ln が失敗する
+# ln -s arduino-1.8.13 arduino
+sudo ln -s arduino-1.8.13 arduino
 cd /home/pi/Applications/arduino/
 ./install.sh
 rm -f /home/pi/arduino-1.8.13-linuxarm.tar.xz
