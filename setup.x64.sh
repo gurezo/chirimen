@@ -69,6 +69,9 @@ nodeInstallCmd=`curl -sL https://deb.nodesource.com/setup_${nodeVer}.x | sudo -E
 eval ${nodeInstallCmd}
 sudo apt install nodejs -y
 
+# npm アップデート
+sudo npm install -g npm 
+
 # 各種ツールをインストール
 sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc apache2 vim emacs libnss3-tools
 # インストール失敗しやすいので2回
@@ -102,14 +105,6 @@ sudo raspi-config nonint do_configure_keyboard jp
 
 # Wi-Fi設定
 sudo raspi-config nonint do_wifi_country JP
-
-# npm アップデート
-sudo npm install -g npm 
-
-# node.jsのインストール
-# sudo npm install n -g
-# sudo n 12.20.0
-# PATH=$PATH
 
 # eslint prettier のインストール
 sudo npm i eslint prettier -g
