@@ -52,28 +52,33 @@ sudo apt-get install at-spi2-core
 
 # update
 sudo apt-get -y update
-sudo apt-get -y full-upgrade
+sudo apt-get -y upgrade
 
 # raspiはupgrade失敗しやすいので念の為2回
 sudo apt-get -y update
-sudo apt-get -y full-upgrade
+sudo apt-get -y upgrade
 
-# npm v14.x 系セットアップ
-curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+# npm セットアップ
+# https://github.com/nodesource/distributions 参照
+# curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+# curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 # curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+# node バージョンは下記変数に入れて指定
+nodeVer=12
+nodeInstallCmd=`curl -sL https://deb.nodesource.com/setup_${nodeVer}.x | sudo -E bash -`
+eval ${nodeInstallCmd}
+sudo apt install nodejs -y
 
 # 各種ツールをインストール
-sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs apache2 vim emacs libnss3-tools
+sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc apache2 vim emacs libnss3-tools
 # インストール失敗しやすいので2回
-sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc nodejs apache2 vim emacs libnss3-tools
+sudo apt-get -y install ttf-kochi-gothic fonts-noto uim uim-mozc apache2 vim emacs libnss3-tools
 sudo apt-get -y autoremove
 sudo apt-get -y autoreclean
 
 # VS code のインストール
-# wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-armhf'
 wget -O /tmp/code.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64'
 sudo apt install -y /tmp/code.deb
-
 
 # 日本語設定
 # デフォルトの設定が en_GB.UTF-8 になっている
