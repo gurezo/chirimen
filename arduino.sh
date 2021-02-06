@@ -16,7 +16,7 @@ cd /home/pi/Applications/
 # FIXME: ln が失敗する
 # ln -s arduino-1.8.13 arduino
 # sudo ln -s arduino-1.8.13 arduino
-cd /home/pi/Applications/arduino/
+cd /home/pi/Applications/arduino-1.8.13/
 ./install.sh
 rm -f /home/pi/arduino-1.8.13-linuxaarch64.tar.xz
 cd /home/pi/
