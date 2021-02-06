@@ -175,7 +175,7 @@ if [ ! -d /home/pi/Desktop/gc/ ]; then
     unzip ./gc.zip -d /home/pi/Desktop
 fi
 # chromiumの起動待ち
-# arduinoのセットアップが失敗したので、変更 120 => 180
+# FIXME: arduinoのセットアップが失敗したので、変更 120 => 180
 sleep 180s 
 
 # Apache設定
@@ -304,6 +304,7 @@ do
 done
 
 
+# FIXME: arduinoのセットアップが失敗したので、要調査
 # Arduino IDE 追加
 cd /home/pi/
 mkdir /home/pi/Applications/
