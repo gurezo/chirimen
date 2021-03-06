@@ -74,8 +74,8 @@ export class GPIOPort {
   }
 
   /**
-   * @function
    * GPIOポート開放処理
+   * @return {*} TBD
    */
   unexport(): Promise<any> {
     return new Promise((resolve, reject) => {
