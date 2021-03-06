@@ -338,7 +338,7 @@
      * GPIOポート接続処理
      * @param {*} direction 入出力方向情報
      */
-     export: function (direction) {
+    export: function (direction) {
       return new Promise((resolve, reject) => {
         var dir = -1;
         if (direction === "out") {
@@ -383,7 +383,7 @@
      * @function
      * GPIO 読み取り処理
      */
-     read: function () {
+    read: function () {
       return new Promise((resolve, reject) => {
         infoLog("read: Port:" + this.portNumber);
         var data = new Uint8Array([this.portNumber]);
@@ -408,7 +408,7 @@
      * GPIO 書き込み処理
      * @param {*} value 書き込みデータ
      */
-     write: function (value) {
+    write: function (value) {
       return new Promise((resolve, reject) => {
         infoLog("write: Port:" + this.portNumber + " value=" + value);
         var data = new Uint8Array([this.portNumber, value]);
