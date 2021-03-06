@@ -7,6 +7,7 @@
   },
   "scripts": {
     "doc": "rm -rf out/ && jsdoc polyfill.js",
+    "compile": "npx tsc",
     "build": "webpack",
     "watch": "webpack -w"
   },
