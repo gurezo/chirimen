@@ -11,6 +11,6 @@
       "es2020",
       "dom"
     ],
-    "outDir": "../dist/"
+    "outDir": "dist/"
   }
 }

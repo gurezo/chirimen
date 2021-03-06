@@ -7,7 +7,7 @@
   },
   "scripts": {
     "doc": "rm -rf out/ && jsdoc polyfill.js",
-    "compile": "npx tsc"
+    "compile": "rm -rf dist/ && npx tsc"
   },
   "devDependencies": {
     "jsdoc": "^3.6.6",
