@@ -1,3 +1,5 @@
+import { Route } from '../route/Route';
+
 import { errLog, infoLog, sleep } from '../common/Common';
 
 export class GPIOPort {
@@ -15,13 +17,15 @@ export class GPIOPort {
   /** 設定値 */
   value = null;
 
+  bone: Route;
+
   /**
    * GPIOPort constructor 処理
    * @param {*} portNumber ポート番号
    * ポート情報マッピング
    */
-  constructor(portNumber: number) {
-    this.init(portNumber);
+  constructor(portNumber: number, bone: Route) {
+    this.init(portNumber, bone);
   }
 
   /**
@@ -29,7 +33,7 @@ export class GPIOPort {
    * @param {*} portNumber ポート番号
    * ポート情報マッピング
    */
-  init(portNumber: number) {
+  init(portNumber: number, bone: Route) {
     this.portNumber = portNumber;
     this.portName = "";
     this.pinName = "";
@@ -37,6 +41,7 @@ export class GPIOPort {
     this.exported = false;
     this.value = null;
     this.onchange = null;
+    this.bone = bone;
   }
 
   /**
@@ -44,7 +49,7 @@ export class GPIOPort {
    * @param {*} direction 入出力方向情報
    * @return {*} TBD
    */
-  export(direction: string): Promise<any> {
+  export(direction: string): Promise<void> {
     return new Promise((resolve, reject) => {
       let dir = -1;
       if (direction === "out") {
@@ -53,35 +58,35 @@ export class GPIOPort {
       } else if (direction === "in") {
         dir = 1;
         //        console.dir(bone);
-        // bone.registerEvent(0x14, this.portNumber, (buf) => {
-        //   if (typeof this.onchange === "function") {
-        //     infoLog("onchange");
-        //     this.onchange(buf[5]);
-        //   }
-        // });
+        this.bone.registerEvent(0x14, this.portNumber, (buf) => {
+          if (typeof this.onchange === "function") {
+            infoLog("onchange");
+            // this.onchange(buf[5]);
+          }
+        });
       } else {
         reject("export:direction not valid! [" + direction + "]");
       }
       infoLog("export: Port:" + this.portNumber + " direction=" + direction);
       const data = new Uint8Array([this.portNumber, dir]);
-      // bone.send(0x10, data).then(
-      //   (result) => {
-      //     if (result[0] == 0) {
-      //       errLog(
-      //         [
-      //           `GPIO${this.portNumber}への接続に失敗しました。`,
-      //           "他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。",
-      //         ].join("")
-      //       );
-      //       reject("GPIOPort(" + this.portNumber + ").export() error");
-      //     } else {
-      //       resolve();
-      //     }
-      //   },
-      //   (error) => {
-      //     reject(error);
-      //   }
-      // );
+      this.bone.send(0x10, data).then(
+        (result) => {
+          if (result[0] == 0) {
+            errLog(
+              [
+                `GPIO${this.portNumber}への接続に失敗しました。`,
+                "他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。",
+              ].join("")
+            );
+            reject("GPIOPort(" + this.portNumber + ").export() error");
+          } else {
+            resolve();
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 

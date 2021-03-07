@@ -1,4 +1,5 @@
 import { GPIOPort } from './GPIOPort';
+import { Route } from '../route/Route';
 
 export class GPIOAccess {
   /** Raspberry Pi Pin Assign */
@@ -26,14 +27,18 @@ export class GPIOAccess {
   unexportAll: null;
   onchange: null;
 
+  constructor(bone: Route) {
+    this.init(bone);
+  }
+
   /**
    * GPIOAccess 初期化処理
    * ポート情報マッピング
    */
-  init() {
+  init(bone: Route) {
     this.ports = new Map();
     this.gpioPorts.forEach((port: number) => {
-      this.ports.set(port, new GPIOPort(port));
+      this.ports.set(port, new GPIOPort(port, bone));
     });
   }
 }

@@ -12,14 +12,14 @@ declare var navigator: any;
 
   const bone = new Route(serverURL);
 
-
+  // I2C 割当
   if (!navigator.requestI2CAccess) {
     /**
      * @function
      *　navigator requestI2CAccess 割当処理
      * @return {*} 割当結果
      */
-    navigator.requestI2CAccess = function () {
+    navigator.requestI2CAccess = () => {
       return new Promise(function (resolve, reject) {
         //      console.dir(bone);
         bone
@@ -36,7 +36,7 @@ declare var navigator: any;
     };
   }
 
-
+  // GPIO 割当
   if (!navigator.requestGPIOAccess) {
     /**
      * @function
@@ -49,7 +49,7 @@ declare var navigator: any;
         bone
           .waitConnection()
           .then(() => {
-            var gpioAccess = new GPIOAccess();
+            var gpioAccess = new GPIOAccess(bone);
             infoLog("gpioAccess.resolve");
             resolve(gpioAccess);
           })
@@ -59,8 +59,5 @@ declare var navigator: any;
       });
     };
   }
-
-
-
 
 })();
