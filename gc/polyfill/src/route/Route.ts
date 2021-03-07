@@ -1,5 +1,9 @@
 import { errLog, infoLog, sleep } from '../common/Common';
 
+/**
+ * ステータス用 enum
+ * @enum {number}
+ */
 enum StatusEnum {
   init = 0, // init
   waitConnection = 1, // wait connection
@@ -29,7 +33,7 @@ export class Route {
     this.onevents = new Map();
     this.wss = new WebSocket(serverURL);
     this.wss.binaryType = "arraybuffer";
-    this.status = 1;
+    this.status = StatusEnum.waitConnection;
     this.wss.onopen = () => {
       infoLog("onopen");
       for (let cnt = 0; cnt < this.waitQueue.length; cnt++) {
@@ -37,7 +41,7 @@ export class Route {
           this.waitQueue[cnt](true);
         }
       }
-      this.status = 2;
+      this.status = StatusEnum.connected;
       this.waitQueue = [];
     };
     this.wss.onerror = (error) => {
@@ -55,7 +59,7 @@ export class Route {
           this.waitQueue[cnt](false);
         }
       }
-      this.status = 0;
+      this.status = StatusEnum.init;
       this.waitQueue = [];
     };
     this.wss.onmessage = (mes) => {
@@ -209,9 +213,9 @@ export class Route {
    */
   waitConnection(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (this.status == 2) {
+      if (this.status == StatusEnum.connected) {
         resolve();
-      } else if (this.status == 0) {
+      } else if (this.status == StatusEnum.init) {
         reject();
       } else {
         this.waitQueue.push((result) => {

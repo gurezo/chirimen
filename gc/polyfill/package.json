@@ -6,6 +6,7 @@
     "access": "public"
   },
   "scripts": {
+    "maked": " dtsmake -s dist/polyfill.js",
     "doc": "rm -rf out/ && jsdoc polyfill.js",
     "compile": "rm -rf dist/ && npx tsc"
   },
@@ -14,6 +15,8 @@
     "typescript": "^4.2.3"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.6"
+    "dtsmake": "0.0.10",
+    "jsdoc": "^3.6.6",
+    "tern": "^0.24.3"
   }
 }
