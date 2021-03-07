@@ -1,6 +1,6 @@
 import { Route } from '../route/Route';
 
-import { errLog, infoLog, sleep } from '../common/Common';
+import { errLog, infoLog } from '../common/Common';
 
 export class GPIOPort {
 
@@ -16,6 +16,7 @@ export class GPIOPort {
   exported = false;
   /** 設定値 */
   value = null;
+  onchange = null;
 
   bone: Route;
 
@@ -35,9 +36,9 @@ export class GPIOPort {
    */
   init(portNumber: number, bone: Route) {
     this.portNumber = portNumber;
-    this.portName = "";
-    this.pinName = "";
-    this.direction = "";
+    this.portName = '';
+    this.pinName = '';
+    this.direction = '';
     this.exported = false;
     this.value = null;
     this.onchange = null;
@@ -52,22 +53,22 @@ export class GPIOPort {
   export(direction: string): Promise<void> {
     return new Promise((resolve, reject) => {
       let dir = -1;
-      if (direction === "out") {
+      if (direction === 'out') {
         dir = 0;
-        // bone.removeEvent(0x14, this.portNumber);
-      } else if (direction === "in") {
+        this.bone.removeEvent(0x14, this.portNumber);
+      } else if (direction === 'in') {
         dir = 1;
         //        console.dir(bone);
         this.bone.registerEvent(0x14, this.portNumber, (buf) => {
-          if (typeof this.onchange === "function") {
-            infoLog("onchange");
-            // this.onchange(buf[5]);
+          if (typeof this.onchange === 'function') {
+            infoLog('onchange');
+            this.onchange(buf[5]);
           }
         });
       } else {
-        reject("export:direction not valid! [" + direction + "]");
+        reject('export:direction not valid! [' + direction + ']');
       }
-      infoLog("export: Port:" + this.portNumber + " direction=" + direction);
+      infoLog('export: Port:' + this.portNumber + ' direction=' + direction);
       const data = new Uint8Array([this.portNumber, dir]);
       this.bone.send(0x10, data).then(
         (result) => {
@@ -75,10 +76,10 @@ export class GPIOPort {
             errLog(
               [
                 `GPIO${this.portNumber}への接続に失敗しました。`,
-                "他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。",
-              ].join("")
+                '他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。',
+              ].join('')
             );
-            reject("GPIOPort(" + this.portNumber + ").export() error");
+            reject('GPIOPort(' + this.portNumber + ').export() error');
           } else {
             resolve();
           }
@@ -111,9 +112,9 @@ export class GPIOPort {
     });
   }
 
-  onchange() {
-    // TODO: 状態変化処理
-  }
+  // onchange() {
+  //   // TODO: 状態変化処理
+  // }
 
   /**
    * GPIOポート開放処理

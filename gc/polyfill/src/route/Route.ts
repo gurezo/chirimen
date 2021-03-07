@@ -11,7 +11,7 @@ enum StatusEnum {
 }
 
 export class Route {
-  wss = null;
+  wss: WebSocket = null;
   queue = null; // function queue
   onevents = null; // onevent queue
   waitQueue = null;
@@ -27,17 +27,17 @@ export class Route {
    * @param {*} serverURL WebSocket サーバーURL
    */
   init(serverURL: string) {
-    infoLog("bone.init()");
+    infoLog('bone.init()');
     this.waitQueue = new Array();
     this.queue = new Map();
     this.onevents = new Map();
     this.wss = new WebSocket(serverURL);
-    this.wss.binaryType = "arraybuffer";
+    this.wss.binaryType = 'arraybuffer';
     this.status = StatusEnum.waitConnection;
     this.wss.onopen = () => {
-      infoLog("onopen");
+      infoLog('onopen');
       for (let cnt = 0; cnt < this.waitQueue.length; cnt++) {
-        if (typeof this.waitQueue[cnt] === "function") {
+        if (typeof this.waitQueue[cnt] === 'function') {
           this.waitQueue[cnt](true);
         }
       }
@@ -48,14 +48,14 @@ export class Route {
       errLog(error);
       errLog(
         [
-          "Node.jsプロセスとの接続に失敗しました。",
-          "CHIRIMEN for Raspberry Piやその互換環境でのみ実行可能です。",
-          "https://r.chirimen.org/tutorial",
-        ].join("\n")
+          'Node.jsプロセスとの接続に失敗しました。',
+          'CHIRIMEN for Raspberry Piやその互換環境でのみ実行可能です。',
+          'https://r.chirimen.org/tutorial',
+        ].join('\n')
       );
       const length = this.waitQueue ? this.waitQueue.length : 0;
       for (let cnt = 0; cnt < length; cnt++) {
-        if (typeof this.waitQueue[cnt] === "function") {
+        if (typeof this.waitQueue[cnt] === 'function') {
           this.waitQueue[cnt](false);
         }
       }
@@ -64,7 +64,7 @@ export class Route {
     };
     this.wss.onmessage = (mes) => {
       const buffer = new Uint8Array(mes.data);
-      infoLog("on message:" + buffer);
+      infoLog('on message:' + buffer);
       if (buffer[0] == 1) {
         this.receive(buffer);
       } else if (buffer[0] == 2) {
@@ -82,7 +82,7 @@ export class Route {
   send(func, data) {
     return new Promise((resolve, reject) => {
       if (!(data instanceof Uint8Array)) {
-        reject("type error: Please using with Uint8Array buffer.");
+        reject('type error: Please using with Uint8Array buffer.');
         return;
       }
       const length = data.length + 4;
@@ -96,7 +96,7 @@ export class Route {
       for (let cnt = 0; cnt < data.length; cnt++) {
         buf[4 + cnt] = data[cnt];
       }
-      infoLog("send message:" + buf);
+      infoLog('send message:' + buf);
       this.queue.set(this.session, (data) => {
         resolve(data);
       });
@@ -116,21 +116,21 @@ export class Route {
    */
   receive(mes) {
     if (!(mes instanceof Uint8Array)) {
-      errLog(new TypeError("Please using with Uint8Array buffer."));
+      errLog(new TypeError('Please using with Uint8Array buffer.'));
       errLog(
         new TypeError(
           [
-            "Uint8Array以外を受信しました。",
-            "Node.jsのプロセスに何らかの内部的な問題が生じている可能性があります。",
-          ].join("")
+            'Uint8Array以外を受信しました。',
+            'Node.jsのプロセスに何らかの内部的な問題が生じている可能性があります。',
+          ].join('')
         )
       );
       return;
     }
     const session = (mes[1] & 0x00ff) | (mes[2] << 8);
     const func = this.queue.get(session);
-    if (typeof func === "function") {
-      infoLog("result");
+    if (typeof func === 'function') {
+      infoLog('result');
       const data = new Array();
       for (let cnt = 0; cnt < mes.length - 4; cnt++) {
         data.push(mes[4 + cnt]);
@@ -138,13 +138,13 @@ export class Route {
       func(data);
       this.queue.delete(session);
     } else {
-      errLog(new TypeError("session=" + session + " func=" + func));
+      errLog(new TypeError('session=' + session + ' func=' + func));
       errLog(
         new TypeError(
           [
-            "受信処理中に問題が発生しました。",
-            "他のウィンドウ/タブなど別のプロセスと競合していないことを確認してください。",
-          ].join("")
+            '受信処理中に問題が発生しました。',
+            '他のウィンドウ/タブなど別のプロセスと競合していないことを確認してください。',
+          ].join('')
         )
       );
     }
@@ -180,13 +180,13 @@ export class Route {
    */
   onEvent(data) {
     if (!(data instanceof Uint8Array)) {
-      errLog(new TypeError("Please using with Uint8Array buffer."));
+      errLog(new TypeError('Please using with Uint8Array buffer.'));
       errLog(
         new TypeError(
           [
-            "Uint8Array以外を受信しました。",
-            "Node.jsのプロセスに何らかの内部的な問題が生じている可能性があります。",
-          ].join("")
+            'Uint8Array以外を受信しました。',
+            'Node.jsのプロセスに何らかの内部的な問題が生じている可能性があります。',
+          ].join('')
         )
       );
       return;
@@ -202,8 +202,8 @@ export class Route {
     key = (key << 8) | data[4];
 
     const func = this.onevents.get(key);
-    if (typeof func === "function") {
-      infoLog("onevent");
+    if (typeof func === 'function') {
+      infoLog('onevent');
       func(data);
     }
   }

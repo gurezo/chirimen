@@ -8,7 +8,7 @@ import { errLog, infoLog, sleep } from './common/Common';
 declare var navigator: any;
 
 (() => {
-  const serverURL = "wss://localhost:33330/";
+  const serverURL = 'wss://localhost:33330/';
 
   const bone = new Route(serverURL);
 
@@ -26,7 +26,7 @@ declare var navigator: any;
           .waitConnection()
           .then(() => {
             var i2cAccess = new I2CAccess();
-            infoLog("I2CAccess.resolve");
+            infoLog('I2CAccess.resolve');
             resolve(i2cAccess);
           })
           .catch((e) => {
@@ -50,7 +50,7 @@ declare var navigator: any;
           .waitConnection()
           .then(() => {
             var gpioAccess = new GPIOAccess(bone);
-            infoLog("gpioAccess.resolve");
+            infoLog('gpioAccess.resolve');
             resolve(gpioAccess);
           })
           .catch((e) => {
