@@ -1,4 +1,4 @@
-import { errLog, infoLog, sleep } from '../common/Common';
+import { errLog, infoLog, sleep } from '../utility/Utility';
 
 /**
  * ステータス用 enum

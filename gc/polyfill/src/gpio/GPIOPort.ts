@@ -1,6 +1,6 @@
 import { Route } from '../route/Route';
 
-import { errLog, infoLog } from '../common/Common';
+import { errLog, infoLog } from '../utility/Utility';
 
 export class GPIOPort {
 
@@ -17,12 +17,13 @@ export class GPIOPort {
   /** 設定値 */
   value = null;
   onchange = null;
-
+  /** Route */
   bone: Route;
 
   /**
    * GPIOPort constructor 処理
    * @param {*} portNumber ポート番号
+   * @param {*} bone TBD
    * ポート情報マッピング
    */
   constructor(portNumber: number, bone: Route) {

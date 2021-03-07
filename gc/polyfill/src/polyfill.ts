@@ -3,7 +3,7 @@ import { I2CAccess } from './i2c/I2CAccess';
 
 import { Route } from './route/Route';
 
-import { errLog, infoLog, sleep } from './common/Common';
+import { errLog, infoLog, sleep } from './utility/Utility';
 
 declare var navigator: any;
 
