@@ -1,3 +1,5 @@
+import { errLog, infoLog, sleep } from '../common/Common';
+
 export class GPIOPort {
 
   /** ポート番号 */
@@ -44,7 +46,42 @@ export class GPIOPort {
    */
   export(direction: string): Promise<any> {
     return new Promise((resolve, reject) => {
-
+      let dir = -1;
+      if (direction === "out") {
+        dir = 0;
+        // bone.removeEvent(0x14, this.portNumber);
+      } else if (direction === "in") {
+        dir = 1;
+        //        console.dir(bone);
+        // bone.registerEvent(0x14, this.portNumber, (buf) => {
+        //   if (typeof this.onchange === "function") {
+        //     infoLog("onchange");
+        //     this.onchange(buf[5]);
+        //   }
+        // });
+      } else {
+        reject("export:direction not valid! [" + direction + "]");
+      }
+      infoLog("export: Port:" + this.portNumber + " direction=" + direction);
+      const data = new Uint8Array([this.portNumber, dir]);
+      // bone.send(0x10, data).then(
+      //   (result) => {
+      //     if (result[0] == 0) {
+      //       errLog(
+      //         [
+      //           `GPIO${this.portNumber}への接続に失敗しました。`,
+      //           "他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。",
+      //         ].join("")
+      //       );
+      //       reject("GPIOPort(" + this.portNumber + ").export() error");
+      //     } else {
+      //       resolve();
+      //     }
+      //   },
+      //   (error) => {
+      //     reject(error);
+      //   }
+      // );
     });
   }
 

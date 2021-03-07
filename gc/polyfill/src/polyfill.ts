@@ -1,40 +1,65 @@
-import { GPIOAccess } from './GPIOAccess';
-import { I2CAccess } from './I2CAccess';
-import { I2CPort } from './I2CPort';
+import { GPIOAccess } from './gpio/GPIOAccess';
+import { I2CAccess } from './i2c/I2CAccess';
 
-/**
- * Utility function for async/await code.
- * @param {number} ms - milliseconds to wait
- * @return {Promise} A promise to be resolved after ms milliseconds later.
- */
-function sleep(ms: number) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, ms);
-  });
-}
+import { Route } from './route/Route';
 
-/**
- * ログ情報出力
- * @param {*} str 出力文字列
- */
-  function infoLog(str: string) {
-  // console.log("info: "+str);
-}
+import { errLog, infoLog, sleep } from './common/Common';
 
-/**
- * エラーログログ情報出力
- * @param {*} error エラー情報
- */
-function errLog(error: any) {
-  console.error(error);
-}
+declare var navigator: any;
 
 (() => {
   const serverURL = "wss://localhost:33330/";
 
-  const _GPIOAccess = new GPIOAccess(); 
-  const _I2CAccess = new I2CAccess(); 
-  const _I2CPort = new I2CPort(); 
+  const bone = new Route(serverURL);
+
+
+  if (!navigator.requestI2CAccess) {
+    /**
+     * @function
+     *　navigator requestI2CAccess 割当処理
+     * @return {*} 割当結果
+     */
+    navigator.requestI2CAccess = function () {
+      return new Promise(function (resolve, reject) {
+        //      console.dir(bone);
+        bone
+          .waitConnection()
+          .then(() => {
+            var i2cAccess = new I2CAccess();
+            infoLog("I2CAccess.resolve");
+            resolve(i2cAccess);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      });
+    };
+  }
+
+
+  if (!navigator.requestGPIOAccess) {
+    /**
+     * @function
+     *　navigator requestGPIOAccess 割当処理
+     * @return {*} 割当結果
+     */
+     navigator.requestGPIOAccess = () => {
+      return new Promise(function (resolve, reject) {
+        //      console.dir(bone);
+        bone
+          .waitConnection()
+          .then(() => {
+            var gpioAccess = new GPIOAccess();
+            infoLog("gpioAccess.resolve");
+            resolve(gpioAccess);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      });
+    };
+  }
+
 
 
 
