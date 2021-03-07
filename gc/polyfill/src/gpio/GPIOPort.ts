@@ -58,7 +58,7 @@ export class GPIOPort {
         this.bone.removeEvent(0x14, this.portNumber);
       } else if (direction === 'in') {
         dir = 1;
-        //        console.dir(bone);
+        // console.dir(bone);
         this.bone.registerEvent(0x14, this.portNumber, (buf) => {
           if (typeof this.onchange === 'function') {
             infoLog('onchange');
@@ -95,9 +95,23 @@ export class GPIOPort {
    * GPIO 読み取り処理
    * @return {*} TBD
    */
-  read(): Promise<any> {
+  read(): Promise<void> {
     return new Promise((resolve, reject) => {
-
+      infoLog('read: Port:' + this.portNumber);
+      var data = new Uint8Array([this.portNumber]);
+      this.bone.send(0x12, data).then(
+        (result) => {
+          if (result[0] == 0) {
+            errLog(`GPIO${this.portNumber}から値の取得に失敗しました。`);
+            reject('GPIOPort(' + this.portNumber + ').read() error');
+          } else {
+            resolve(result[1]);
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 
@@ -106,23 +120,47 @@ export class GPIOPort {
    * @param {*} value 書き込みデータ
    * @return {*} TBD
    */
-  write(): Promise<any> {
+  write(): Promise<void> {
     return new Promise((resolve, reject) => {
-
+      infoLog('write: Port:' + this.portNumber + ' value=' + this.value);
+      var data = new Uint8Array([this.portNumber, this.value]);
+      this.bone.send(0x11, data).then(
+        (result) => {
+          if (result[0] == 0) {
+            errLog(`GPIO${this.portNumber}に値の設定に失敗しました。`);
+            reject('GPIOPort(' + this.portNumber + ').write() error');
+          } else {
+            resolve();
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
-
-  // onchange() {
-  //   // TODO: 状態変化処理
-  // }
 
   /**
    * GPIOポート開放処理
    * @return {*} TBD
    */
-  unexport(): Promise<any> {
+  unexport(): Promise<void> {
     return new Promise((resolve, reject) => {
-
+      infoLog('unexport: Port:' + this.portNumber);
+      var data = new Uint8Array([this.portNumber, this.value]);
+      this.bone.send(0x13, data).then(
+        (result) => {
+          if (result[0] == 0) {
+            errLog(`GPIO${this.portNumber}の開放に失敗しました。`);
+            reject('GPIOPort(' + this.portNumber + ').unexport() error');
+          } else {
+            resolve();
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 }
