@@ -1,6 +1,7 @@
 import { Route } from '../route/Route';
 
 import { errLog, infoLog, printReadError, printWriteError } from '../utility/Utility';
+
 export class I2CSlaveDevice {
   portNumber: number = null;
   slaveAddress: number = null;
