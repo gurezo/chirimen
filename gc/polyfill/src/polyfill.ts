@@ -25,7 +25,7 @@ declare var navigator: any;
         bone
           .waitConnection()
           .then(() => {
-            var i2cAccess = new I2CAccess();
+            var i2cAccess = new I2CAccess(bone);
             infoLog('I2CAccess.resolve');
             resolve(i2cAccess);
           })
