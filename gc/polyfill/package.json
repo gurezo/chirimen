@@ -6,6 +6,8 @@
     "access": "public"
   },
   "scripts": {
+    "build": "rm -rf dist/ && webpack",
+    "watch": "webpack -w",
     "maked": " dtsmake -s dist/polyfill.js",
     "doc": "rm -rf out/ && jsdoc polyfill.js",
     "compile": "rm -rf dist/ && npx tsc"
@@ -17,6 +19,8 @@
   "devDependencies": {
     "dtsmake": "0.0.10",
     "jsdoc": "^3.6.6",
-    "tern": "^0.24.3"
+    "tern": "^0.24.3",
+    "webpack": "^5.24.3",
+    "webpack-cli": "^4.5.0"
   }
 }
