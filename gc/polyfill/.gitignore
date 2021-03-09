@@ -6,8 +6,12 @@ Thumbs.db
 /node_modules
 
 # jsdoc
+<<<<<<< HEAD
 /out
 
 # webpack
 /dist
 
+=======
+/jsdoc
+>>>>>>> feature/jsdoc
