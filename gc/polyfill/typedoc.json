@@ -1,15 +1,6 @@
 {
-  "mode": "modules",
-  "out": "tsdoc",
-  "theme": "default",
-  "ignoreCompilerErrors": "true",
-  "experimentalDecorators": "true",
-  "emitDecoratorMetadata": "true",
-  "target": "es2015",
-  "moduleResolution": "node",
-  "preserveConstEnums": "true",
-  "stripInternal": "true",
-  "suppressExcessPropertyErrors": "true",
-  "suppressImplicitAnyIndexErrors": "true",
-  "module": "commonjs"
+  "entryPoints": [
+    "src/polyfill.ts"
+  ],
+  "out": "tsdocs"
 }

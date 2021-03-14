@@ -11,7 +11,7 @@
     "maked": " dtsmake -s dist/polyfill.js",
     "jsdoc": "rm -rf jsdoc/ && jsdoc -d jsdoc polyfill.js",
     "compile": "rm -rf dist/ && npx tsc",
-    "tsdoc": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./src/*",
+    "tsdoc": "npm run typedoc -- --options typedoc.json",
     "typedoc": "typedoc"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
     "dtsmake": "0.0.10",
     "jsdoc": "^3.6.6",
     "tern": "^0.24.3",
-    "typedoc": "^0.20.30",
+    "typedoc": "^0.20.31",
     "webpack": "^5.24.3",
     "webpack-cli": "^4.5.0"
   }
