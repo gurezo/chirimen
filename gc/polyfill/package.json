@@ -9,6 +9,7 @@
     "jsdoc": "rm -rf ../../docs/ && jsdoc -d ../../docs polyfill.js README.md"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.7"
+    "jsdoc": "^3.6.7",
+    "ts-migrate": "^0.1.30"
   }
 }
