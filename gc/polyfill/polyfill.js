@@ -1,5 +1,5 @@
 (() => {
-  var serverURL = "wss://localhost:33330/";
+  const serverURL = "wss://localhost:33330/";
 
   /**
    * ログ情報出力
@@ -17,7 +17,7 @@
     console.error(error);
   }
 
-  var bone = (() => {
+  const bone = (() => {
     /**
      * router コンストラクターの関数, class 定義
      */
@@ -46,7 +46,7 @@
         this.status = 1;
         this.wss.onopen = () => {
           infoLog("onopen");
-          for (var cnt = 0; cnt < this.waitQueue.length; cnt++) {
+          for (let cnt = 0; cnt < this.waitQueue.length; cnt++) {
             if (typeof this.waitQueue[cnt] === "function") {
               this.waitQueue[cnt](true);
             }
@@ -63,8 +63,8 @@
               "https://r.chirimen.org/tutorial",
             ].join("\n")
           );
-          var length = this.waitQueue ? this.waitQueue.length : 0;
-          for (var cnt = 0; cnt < length; cnt++) {
+          const length = this.waitQueue ? this.waitQueue.length : 0;
+          for (let cnt = 0; cnt < length; cnt++) {
             if (typeof this.waitQueue[cnt] === "function") {
               this.waitQueue[cnt](false);
             }
@@ -73,7 +73,7 @@
           this.waitQueue = [];
         };
         this.wss.onmessage = (mes) => {
-          var buffer = new Uint8Array(mes.data);
+          const buffer = new Uint8Array(mes.data);
           infoLog("on message:" + buffer);
           if (buffer[0] == 1) {
             this.receive(buffer);
@@ -95,15 +95,15 @@
             reject("type error: Please using with Uint8Array buffer.");
             return;
           }
-          var length = data.length + 4;
-          var buf = new Uint8Array(length);
+          const length = data.length + 4;
+          let buf = new Uint8Array(length);
 
           buf[0] = 1; // 1: API Request
           buf[1] = this.session & 0x00ff; // session LSB
           buf[2] = this.session >> 8; // session MSB
           buf[3] = func;
 
-          for (var cnt = 0; cnt < data.length; cnt++) {
+          for (let cnt = 0; cnt < data.length; cnt++) {
             buf[4 + cnt] = data[cnt];
           }
           infoLog("send message:" + buf);
@@ -137,12 +137,12 @@
           );
           return;
         }
-        var session = (mes[1] & 0x00ff) | (mes[2] << 8);
-        var func = this.queue.get(session);
+        const session = (mes[1] & 0x00ff) | (mes[2] << 8);
+        const func = this.queue.get(session);
         if (typeof func === "function") {
           infoLog("result");
-          var data = new Array();
-          for (var cnt = 0; cnt < mes.length - 4; cnt++) {
+          const data = new Array();
+          for (let cnt = 0; cnt < mes.length - 4; cnt++) {
             data.push(mes[4 + cnt]);
           }
           func(data);
@@ -168,7 +168,7 @@
        * @param func 登録バッファ
        */
       registerEvent: (f, port, func) => {
-        var key = (f << 8) | port;
+        const key = (f << 8) | port;
         this.onevents.set(key, func);
       },
 
@@ -179,7 +179,7 @@
        * @param port ポート番号
        */
       removeEvent: (f, port) => {
-        var key = (f << 8) | port;
+        const key = (f << 8) | port;
         this.onevents.delete(key);
       },
 
@@ -207,10 +207,10 @@
         // [3] function id (0x14)
         // [4] Port Number
         // [5] Value (0:LOW 1:HIGH)
-        var key = data[3];
+        let key = data[3];
         key = (key << 8) | data[4];
 
-        var func = this.onevents.get(key);
+        const func = this.onevents.get(key);
         if (typeof func === "function") {
           infoLog("onevent");
           func(data);
@@ -240,7 +240,7 @@
       },
     };
 
-    var rt = new router();
+    const rt = new router();
     rt.init(serverURL);
     return rt;
   })();
@@ -251,7 +251,7 @@
    *
    * TODO: add portName and pinName
    * */
-  var gpioPorts = [
+  const gpioPorts = [
     4, 17, 18, 27, 22, 23, 24, 25, 5, 6, 12, 13, 19, 16, 26, 20, 21,
   ];
 
@@ -259,7 +259,7 @@
    * @function
    * GPIOAccess コンストラクターの関数の定義
    */
-  var GPIOAccess = () => {
+  const GPIOAccess = () => {
     this.init();
   };
 
@@ -274,7 +274,7 @@
      */
     init: () => {
       this.ports = new Map();
-      for (var cnt = 0; cnt < gpioPorts.length; cnt++) {
+      for (let cnt = 0; cnt < gpioPorts.length; cnt++) {
         this.ports.set(gpioPorts[cnt], new GPIOPort(gpioPorts[cnt]));
       }
     },
@@ -289,7 +289,7 @@
    * @param portNumber ポート番号
    * ポート番号定義
    */
-  var GPIOPort = (portNumber) => {
+  const GPIOPort = (portNumber) => {
     infoLog("GPIOPort:" + portNumber);
     this.init(portNumber);
   };
@@ -322,7 +322,7 @@
      */
     export: (direction) => {
       return new Promise((resolve, reject) => {
-        var dir = -1;
+        let dir = -1;
         if (direction === "out") {
           dir = 0;
           bone.removeEvent(0x14, this.portNumber);
@@ -339,7 +339,7 @@
           reject("export:direction not valid! [" + direction + "]");
         }
         infoLog("export: Port:" + this.portNumber + " direction=" + direction);
-        var data = new Uint8Array([this.portNumber, dir]);
+        const data = new Uint8Array([this.portNumber, dir]);
         bone.send(0x10, data).then(
           (result) => {
             if (result[0] == 0) {
@@ -368,7 +368,7 @@
     read: () => {
       return new Promise((resolve, reject) => {
         infoLog("read: Port:" + this.portNumber);
-        var data = new Uint8Array([this.portNumber]);
+        const data = new Uint8Array([this.portNumber]);
         bone.send(0x12, data).then(
           (result) => {
             if (result[0] == 0) {
@@ -393,7 +393,7 @@
     write: (value) => {
       return new Promise((resolve, reject) => {
         infoLog("write: Port:" + this.portNumber + " value=" + value);
-        var data = new Uint8Array([this.portNumber, value]);
+        const data = new Uint8Array([this.portNumber, value]);
         bone.send(0x11, data).then(
           (result) => {
             if (result[0] == 0) {
@@ -423,7 +423,7 @@
     unexport: () => {
       return new Promise((resolve, reject) => {
         infoLog("unexport: Port:" + this.portNumber);
-        var data = new Uint8Array([this.portNumber, value]);
+        const data = new Uint8Array([this.portNumber, value]);
         bone.send(0x13, data).then(
           (result) => {
             if (result[0] == 0) {
@@ -444,7 +444,7 @@
   //////////////////////////////////////////////////////////////////////////
   // I2CAccess
 
-  var i2cPorts = [1];
+  const i2cPorts = [1];
 
   /**
    * @function
@@ -485,7 +485,7 @@
    * @function
    * I2CAccess コンストラクターの関数の定義
    */
-  var I2CAccess = () => {
+  const I2CAccess = () => {
     this.init();
   };
 
@@ -501,7 +501,7 @@
      */
     init: () => {
       this.ports = new Map();
-      for (var cnt = 0; cnt < i2cPorts.length; cnt++) {
+      for (let cnt = 0; cnt < i2cPorts.length; cnt++) {
         this.ports.set(i2cPorts[cnt], new I2CPort(i2cPorts[cnt]));
       }
     },
@@ -599,7 +599,7 @@
       return new Promise((resolve, reject) => {
         this.portNumber = portNumber;
         this.slaveAddress = slaveAddress;
-        var data = new Uint8Array([this.slaveAddress, 1]);
+        const data = new Uint8Array([this.slaveAddress, 1]);
         bone.send(0x20, data).then(
           (result) => {
             if (result[0] != 0) {
@@ -627,11 +627,11 @@
      */
     read8: (registerNumber) => {
       return new Promise((resolve, reject) => {
-        var data = new Uint8Array([this.slaveAddress, registerNumber, 1]);
+        const data = new Uint8Array([this.slaveAddress, registerNumber, 1]);
         bone.send(0x23, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.read8() result value=" + result);
-            var readSize = result[0];
+            const readSize = result[0];
             if (readSize == 1) {
               resolve(result[1]);
             } else {
@@ -656,15 +656,15 @@
     read16: (registerNumber) => {
       return new Promise((resolve, reject) => {
         infoLog("I2CSlaveDevice.read16() registerNumber=" + registerNumber);
-        var data = new Uint8Array([this.slaveAddress, registerNumber, 2]);
+        const data = new Uint8Array([this.slaveAddress, registerNumber, 2]);
         bone.send(0x23, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.write8() result value=" + result);
-            var readSize = result[0];
+            const readSize = result[0];
             if (readSize == 2) {
-              var res_l = result[1];
-              var res_h = result[2];
-              var res = res_l + (res_h << 8);
+              const res_l = result[1];
+              const res_h = result[2];
+              const res = res_l + (res_h << 8);
               resolve(res);
             } else {
               printReadError(this.portNumber, this.slaveAddress);
@@ -692,8 +692,8 @@
           "I2CSlaveDevice.write8() registerNumber=" + registerNumber,
           " value=" + value
         );
-        var size = 2;
-        var data = new Uint8Array([
+        const size = 2;
+        const data = new Uint8Array([
           this.slaveAddress,
           size,
           registerNumber,
@@ -732,10 +732,10 @@
           "I2CSlaveDevice.write16() registerNumber=" + registerNumber,
           " value=" + value
         );
-        var value_L = value & 0x00ff;
-        var value_H = (value >> 8) & 0x00ff;
-        var size = 3;
-        var data = new Uint8Array([
+        const value_L = value & 0x00ff;
+        const value_H = (value >> 8) & 0x00ff;
+        const size = 3;
+        const data = new Uint8Array([
           this.slaveAddress,
           size,
           registerNumber,
@@ -769,11 +769,11 @@
      */
     readByte: () => {
       return new Promise((resolve, reject) => {
-        var data = new Uint8Array([this.slaveAddress, 1]);
+        const data = new Uint8Array([this.slaveAddress, 1]);
         bone.send(0x22, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.readByte() result value=" + result);
-            var readSize = result[0];
+            const readSize = result[0];
             if (readSize == 1) {
               resolve(result[1]);
             } else {
@@ -800,13 +800,13 @@
         if (typeof length !== "number" || length > 127) {
           reject("readBytes() readSize error : " + length);
         }
-        var data = new Uint8Array([this.slaveAddress, length]);
+        const data = new Uint8Array([this.slaveAddress, length]);
         bone.send(0x22, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.readBytes() result value=" + result);
-            var readSize = result[0];
+            const readSize = result[0];
             if (readSize == length) {
-              var buffer = result;
+              let buffer = result;
               buffer.shift(); // readSizeを削除
               resolve(buffer);
             } else {
@@ -831,8 +831,8 @@
     writeByte: (value) => {
       return new Promise((resolve, reject) => {
         infoLog("I2CSlaveDevice.writeByte() value=" + value);
-        var size = 1;
-        var data = new Uint8Array([this.slaveAddress, size, value]);
+        const size = 1;
+        const data = new Uint8Array([this.slaveAddress, size, value]);
         bone.send(0x21, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.writeByte() result" + result);
@@ -864,16 +864,16 @@
         if (buffer.length == null) {
           reject("readBytes() parameter error : " + buffer);
         }
-        var arr = [this.slaveAddress, buffer.length];
-        for (var cnt = 0; cnt < buffer.length; cnt++) {
+        const arr = [this.slaveAddress, buffer.length];
+        for (let cnt = 0; cnt < buffer.length; cnt++) {
           arr.push(buffer[cnt]);
         }
-        var data = new Uint8Array(arr);
+        const data = new Uint8Array(arr);
         bone.send(0x21, data).then(
           (result) => {
             infoLog("I2CSlaveDevice.writeBytes() result value=" + result);
             if (result[0] == buffer.length) {
-              var resbuffer = result;
+              const resbuffer = result;
               resbuffer.shift(); // readSizeを削除
               resolve(resbuffer);
             } else {
@@ -904,7 +904,7 @@
         bone
           .waitConnection()
           .then(() => {
-            var i2cAccess = new I2CAccess();
+            const i2cAccess = new I2CAccess();
             infoLog("I2CAccess.resolve");
             resolve(i2cAccess);
           })
@@ -927,7 +927,7 @@
         bone
           .waitConnection()
           .then(() => {
-            var gpioAccess = new GPIOAccess();
+            const gpioAccess = new GPIOAccess();
             infoLog("gpioAccess.resolve");
             resolve(gpioAccess);
           })
