@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "jsdoc": "^3.6.7",
-    "ts-migrate": "^0.1.30"
+    "ts-migrate": "^0.1.30",
+    "ts-node": "^10.9.1"
   }
 }
