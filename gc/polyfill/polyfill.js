@@ -1,11 +1,11 @@
 (() => {
-  const serverURL = "wss://localhost:33330/";
+  var serverURL = "wss://localhost:33330/";
 
   /**
    * ログ情報出力
    * @param str 出力文字列
    */
-  function infoLog(str: any) {
+  function infoLog(str) {
     // console.log("info: "+str);
   }
 
@@ -13,11 +13,11 @@
    * エラーログログ情報出力
    * @param error エラー情報
    */
-  function errLog(error: any) {
+  function errLog(error) {
     console.error(error);
   }
 
-  const bone = (() => {
+  var bone = (() => {
     /**
      * router コンストラクターの関数, class 定義
      */
@@ -36,38 +36,25 @@
        * GPIO 初期化処理
        * @param serverURL WebSocket サーバーURL
        */
-      init: (serverURL: any) => {
+      init: (serverURL) => {
         infoLog("bone.init()");
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.waitQueue = new Array();
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.queue = new Map();
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.onevents = new Map();
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.wss = new WebSocket(serverURL);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.wss.binaryType = "arraybuffer";
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.status = 1;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.wss.onopen = () => {
           infoLog("onopen");
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-          for (let cnt = 0; cnt < this.waitQueue.length; cnt++) {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+          for (var cnt = 0; cnt < this.waitQueue.length; cnt++) {
             if (typeof this.waitQueue[cnt] === "function") {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               this.waitQueue[cnt](true);
             }
           }
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.status = 2;
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.waitQueue = [];
         };
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        this.wss.onerror = (error: any) => {
+        this.wss.onerror = (error) => {
           errLog(error);
           errLog(
             [
@@ -76,29 +63,21 @@
               "https://r.chirimen.org/tutorial",
             ].join("\n")
           );
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-          const length = this.waitQueue ? this.waitQueue.length : 0;
-          for (let cnt = 0; cnt < length; cnt++) {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+          var length = this.waitQueue ? this.waitQueue.length : 0;
+          for (var cnt = 0; cnt < length; cnt++) {
             if (typeof this.waitQueue[cnt] === "function") {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               this.waitQueue[cnt](false);
             }
           }
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.status = 0;
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.waitQueue = [];
         };
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        this.wss.onmessage = (mes: any) => {
-          const buffer = new Uint8Array(mes.data);
+        this.wss.onmessage = (mes) => {
+          var buffer = new Uint8Array(mes.data);
           infoLog("on message:" + buffer);
           if (buffer[0] == 1) {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
             this.receive(buffer);
           } else if (buffer[0] == 2) {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
             this.onEvent(buffer);
           }
         };
@@ -110,40 +89,31 @@
        * @param func 送信先アドレス
        * @param data 送信処理
        */
-      // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
-      send: (func: any, data: any) => {
+      send: (func, data) => {
         return new Promise((resolve, reject) => {
           if (!(data instanceof Uint8Array)) {
             reject("type error: Please using with Uint8Array buffer.");
             return;
           }
-          const length = data.length + 4;
-          let buf = new Uint8Array(length);
+          var length = data.length + 4;
+          var buf = new Uint8Array(length);
 
           buf[0] = 1; // 1: API Request
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           buf[1] = this.session & 0x00ff; // session LSB
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           buf[2] = this.session >> 8; // session MSB
           buf[3] = func;
 
-          for (let cnt = 0; cnt < data.length; cnt++) {
+          for (var cnt = 0; cnt < data.length; cnt++) {
             buf[4 + cnt] = data[cnt];
           }
           infoLog("send message:" + buf);
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-          this.queue.set(this.session, (data: any) => {
+          this.queue.set(this.session, (data) => {
             resolve(data);
           });
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.wss.send(buf);
-          // @ts-expect-error TS(2322): Type 'null' is not assignable to type 'Uint8Array'... Remove this comment to see the full error message
           buf = null;
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.session++;
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           if (this.session > 0xffff) {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
             this.session = 0;
           }
         });
@@ -154,7 +124,7 @@
        * GPIO データ受信処理
        * @param mes 受信メッセージ
        */
-      receive: (mes: any) => {
+      receive: (mes) => {
         if (!(mes instanceof Uint8Array)) {
           errLog(new TypeError("Please using with Uint8Array buffer."));
           errLog(
@@ -167,17 +137,15 @@
           );
           return;
         }
-        const session = (mes[1] & 0x00ff) | (mes[2] << 8);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const func = this.queue.get(session);
+        var session = (mes[1] & 0x00ff) | (mes[2] << 8);
+        var func = this.queue.get(session);
         if (typeof func === "function") {
           infoLog("result");
-          const data = new Array();
-          for (let cnt = 0; cnt < mes.length - 4; cnt++) {
+          var data = new Array();
+          for (var cnt = 0; cnt < mes.length - 4; cnt++) {
             data.push(mes[4 + cnt]);
           }
           func(data);
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           this.queue.delete(session);
         } else {
           errLog(new TypeError("session=" + session + " func=" + func));
@@ -199,9 +167,8 @@
        * @param port ポート番号
        * @param func 登録バッファ
        */
-      registerEvent: (f: any, port: any, func: any) => {
-        const key = (f << 8) | port;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+      registerEvent: (f, port, func) => {
+        var key = (f << 8) | port;
         this.onevents.set(key, func);
       },
 
@@ -211,9 +178,8 @@
        * @param f 登録アドレス
        * @param port ポート番号
        */
-      removeEvent: (f: any, port: any) => {
-        const key = (f << 8) | port;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+      removeEvent: (f, port) => {
+        var key = (f << 8) | port;
         this.onevents.delete(key);
       },
 
@@ -221,7 +187,7 @@
        * GPIO イベント発生時処理
        * @param data データ
        */
-      onEvent: (data: any) => {
+      onEvent: (data) => {
         if (!(data instanceof Uint8Array)) {
           errLog(new TypeError("Please using with Uint8Array buffer."));
           errLog(
@@ -241,11 +207,10 @@
         // [3] function id (0x14)
         // [4] Port Number
         // [5] Value (0:LOW 1:HIGH)
-        let key = data[3];
+        var key = data[3];
         key = (key << 8) | data[4];
 
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const func = this.onevents.get(key);
+        var func = this.onevents.get(key);
         if (typeof func === "function") {
           infoLog("onevent");
           func(data);
@@ -258,18 +223,13 @@
        */
       waitConnection: () => {
         return new Promise((resolve, reject) => {
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           if (this.status == 2) {
-            // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
             resolve();
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           } else if (this.status == 0) {
             reject();
           } else {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-            this.waitQueue.push((result: any) => {
+            this.waitQueue.push((result) => {
               if (result == true) {
-                // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
                 resolve();
               } else {
                 reject();
@@ -280,8 +240,7 @@
       },
     };
 
-    // @ts-expect-error TS(7009): 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
-    const rt = new router();
+    var rt = new router();
     rt.init(serverURL);
     return rt;
   })();
@@ -292,7 +251,7 @@
    *
    * TODO: add portName and pinName
    * */
-  const gpioPorts = [
+  var gpioPorts = [
     4, 17, 18, 27, 22, 23, 24, 25, 5, 6, 12, 13, 19, 16, 26, 20, 21,
   ];
 
@@ -300,8 +259,7 @@
    * @function
    * GPIOAccess コンストラクターの関数の定義
    */
-  const GPIOAccess = () => {
-    // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+  var GPIOAccess = () => {
     this.init();
   };
 
@@ -315,10 +273,8 @@
      * ポート情報マッピング
      */
     init: () => {
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.ports = new Map();
-      for (let cnt = 0; cnt < gpioPorts.length; cnt++) {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+      for (var cnt = 0; cnt < gpioPorts.length; cnt++) {
         this.ports.set(gpioPorts[cnt], new GPIOPort(gpioPorts[cnt]));
       }
     },
@@ -333,9 +289,8 @@
    * @param portNumber ポート番号
    * ポート番号定義
    */
-  const GPIOPort = (portNumber: any) => {
+  var GPIOPort = (portNumber) => {
     infoLog("GPIOPort:" + portNumber);
-    // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
     this.init(portNumber);
   };
 
@@ -350,20 +305,13 @@
      * @param portNumber ポート番号
      * ポート情報マッピング
      */
-    init: (portNumber: any) => {
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+    init: (portNumber) => {
       this.portNumber = portNumber;
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.portName = "";
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.pinName = "";
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.direction = "";
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.exported = false;
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.value = null;
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.onchange = null;
     },
 
@@ -372,51 +320,41 @@
      * GPIOポート接続処理
      * @param direction 入出力方向情報
      */
-    export: (direction: any) => {
+    export: (direction) => {
       return new Promise((resolve, reject) => {
-        let dir = -1;
+        var dir = -1;
         if (direction === "out") {
           dir = 0;
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
           bone.removeEvent(0x14, this.portNumber);
         } else if (direction === "in") {
           dir = 1;
           //        console.dir(bone);
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-          bone.registerEvent(0x14, this.portNumber, (buf: any) => {
-            // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+          bone.registerEvent(0x14, this.portNumber, (buf) => {
             if (typeof this.onchange === "function") {
               infoLog("onchange");
-              // @ts-expect-error TS(2684): The 'this' context of type 'typeof globalThis' is ... Remove this comment to see the full error message
               this.onchange(buf[5]);
             }
           });
         } else {
           reject("export:direction not valid! [" + direction + "]");
         }
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         infoLog("export: Port:" + this.portNumber + " direction=" + direction);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.portNumber, dir]);
+        var data = new Uint8Array([this.portNumber, dir]);
         bone.send(0x10, data).then(
-          (result: any) => {
+          (result) => {
             if (result[0] == 0) {
               errLog(
                 [
-                  `GPIO${                  
-// @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-this.portNumber}への接続に失敗しました。`,
+                  `GPIO${this.portNumber}への接続に失敗しました。`,
                   "他のウィンドウ/タブなど別のプロセスが既に同じピン番号を使用している可能性があります。",
                 ].join("")
               );
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               reject("GPIOPort(" + this.portNumber + ").export() error");
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -429,22 +367,18 @@ this.portNumber}への接続に失敗しました。`,
      */
     read: () => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         infoLog("read: Port:" + this.portNumber);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.portNumber]);
+        var data = new Uint8Array([this.portNumber]);
         bone.send(0x12, data).then(
-          (result: any) => {
+          (result) => {
             if (result[0] == 0) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               errLog(`GPIO${this.portNumber}から値の取得に失敗しました。`);
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               reject("GPIOPort(" + this.portNumber + ").read() error");
             } else {
               resolve(result[1]);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -456,25 +390,20 @@ this.portNumber}への接続に失敗しました。`,
      * GPIO 書き込み処理
      * @param value 書き込みデータ
      */
-    write: (value: any) => {
+    write: (value) => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         infoLog("write: Port:" + this.portNumber + " value=" + value);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.portNumber, value]);
+        var data = new Uint8Array([this.portNumber, value]);
         bone.send(0x11, data).then(
-          (result: any) => {
+          (result) => {
             if (result[0] == 0) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               errLog(`GPIO${this.portNumber}に値の設定に失敗しました。`);
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               reject("GPIOPort(" + this.portNumber + ").write() error");
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -493,23 +422,18 @@ this.portNumber}への接続に失敗しました。`,
      */
     unexport: () => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         infoLog("unexport: Port:" + this.portNumber);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.portNumber, value]);
+        var data = new Uint8Array([this.portNumber, value]);
         bone.send(0x13, data).then(
-          (result: any) => {
+          (result) => {
             if (result[0] == 0) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               errLog(`GPIO${this.portNumber}の開放に失敗しました。`);
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               reject("GPIOPort(" + this.portNumber + ").unexport() error");
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -520,7 +444,7 @@ this.portNumber}への接続に失敗しました。`,
   //////////////////////////////////////////////////////////////////////////
   // I2CAccess
 
-  const i2cPorts = [1];
+  var i2cPorts = [1];
 
   /**
    * @function
@@ -529,7 +453,7 @@ this.portNumber}への接続に失敗しました。`,
    * @param slaveAddress スレーブアドレス
    * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
    */
-  function printReadError(portNumber: any, slaveAddress: any) {
+  function printReadError(portNumber, slaveAddress) {
     errLog(
       [
         `i2c-${portNumber}(アドレス: 0x${slaveAddress.toString(16)})`,
@@ -546,7 +470,7 @@ this.portNumber}への接続に失敗しました。`,
    * @param slaveAddress スレーブアドレス
    * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
    */
-  function printWriteError(portNumber: any, slaveAddress: any) {
+  function printWriteError(portNumber, slaveAddress) {
     errLog(
       [
         `I2C-${portNumber}`,
@@ -561,8 +485,7 @@ this.portNumber}への接続に失敗しました。`,
    * @function
    * I2CAccess コンストラクターの関数の定義
    */
-  const I2CAccess = () => {
-    // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+  var I2CAccess = () => {
     this.init();
   };
 
@@ -577,10 +500,8 @@ this.portNumber}への接続に失敗しました。`,
      * ポート情報マッピング
      */
     init: () => {
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
       this.ports = new Map();
-      for (let cnt = 0; cnt < i2cPorts.length; cnt++) {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+      for (var cnt = 0; cnt < i2cPorts.length; cnt++) {
         this.ports.set(i2cPorts[cnt], new I2CPort(i2cPorts[cnt]));
       }
     },
@@ -593,7 +514,7 @@ this.portNumber}への接続に失敗しました。`,
    * @param portNumber ポート番号定義
    * ポート番号定義
    */
-  function I2CPort(this: any, portNumber: any) {
+  function I2CPort(portNumber) {
     this.init(portNumber);
   }
 
@@ -608,8 +529,7 @@ this.portNumber}への接続に失敗しました。`,
      * @param portNumber ポート番号
      * ポート情報マッピング
      */
-    init: (portNumber: any) => {
-      // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+    init: (portNumber) => {
       this.portNumber = portNumber;
     },
 
@@ -620,14 +540,13 @@ this.portNumber}への接続に失敗しました。`,
      * I2C ポート open 処理
      * @param slaveAddress スレーブアドレス
      */
-    open: (slaveAddress: any) => {
+    open: (slaveAddress) => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7009): 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
         new I2CSlaveDevice(this.portNumber, slaveAddress).then(
-          (i2cslave: any) => {
+          (i2cslave) => {
             resolve(i2cslave);
           },
-          (err: any) => {
+          (err) => {
             reject(err);
           }
         );
@@ -643,13 +562,13 @@ this.portNumber}への接続に失敗しました。`,
    * @return ポート、デバイス初期化結果
    * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
    */
-  function I2CSlaveDevice(this: any, portNumber: any, slaveAddress: any) {
+  function I2CSlaveDevice(portNumber, slaveAddress) {
     return new Promise((resolve, reject) => {
       this.init(portNumber, slaveAddress).then(
         () => {
           resolve(this);
         },
-        (err: any) => {
+        (err) => {
           reject(err);
         }
       );
@@ -676,28 +595,23 @@ this.portNumber}への接続に失敗しました。`,
      * @return ポート、デバイス初期化結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    init: (portNumber: any, slaveAddress: any) => {
+    init: (portNumber, slaveAddress) => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.portNumber = portNumber;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
         this.slaveAddress = slaveAddress;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, 1]);
+        var data = new Uint8Array([this.slaveAddress, 1]);
         bone.send(0x20, data).then(
-          (result: any) => {
+          (result) => {
             if (result[0] != 0) {
               infoLog("I2CSlaveDevice.init() result OK");
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               resolve(this);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               errLog(`I2C-${this.portNumber}への接続に失敗しました。`);
               errLog("I2CSlaveDevice.init() result NG");
               reject("I2CSlaveDevice.init() result NG:");
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -711,23 +625,21 @@ this.portNumber}への接続に失敗しました。`,
      * @return 読み込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    read8: (registerNumber: any) => {
+    read8: (registerNumber) => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, registerNumber, 1]);
+        var data = new Uint8Array([this.slaveAddress, registerNumber, 1]);
         bone.send(0x23, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.read8() result value=" + result);
-            const readSize = result[0];
+            var readSize = result[0];
             if (readSize == 1) {
               resolve(result[1]);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printReadError(this.portNumber, this.slaveAddress);
               reject("read8() readSize unmatch : " + readSize);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -741,27 +653,25 @@ this.portNumber}への接続に失敗しました。`,
      * @return 読み込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    read16: (registerNumber: any) => {
+    read16: (registerNumber) => {
       return new Promise((resolve, reject) => {
         infoLog("I2CSlaveDevice.read16() registerNumber=" + registerNumber);
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, registerNumber, 2]);
+        var data = new Uint8Array([this.slaveAddress, registerNumber, 2]);
         bone.send(0x23, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.write8() result value=" + result);
-            const readSize = result[0];
+            var readSize = result[0];
             if (readSize == 2) {
-              const res_l = result[1];
-              const res_h = result[2];
-              const res = res_l + (res_h << 8);
+              var res_l = result[1];
+              var res_h = result[2];
+              var res = res_l + (res_h << 8);
               resolve(res);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printReadError(this.portNumber, this.slaveAddress);
               reject("read16() readSize unmatch : " + readSize);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -776,37 +686,32 @@ this.portNumber}への接続に失敗しました。`,
      * @return 書き込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    write8: (registerNumber: any, value: any) => {
+    write8: (registerNumber, value) => {
       return new Promise((resolve, reject) => {
         infoLog(
           "I2CSlaveDevice.write8() registerNumber=" + registerNumber,
-          // @ts-expect-error TS(2554): Expected 1 arguments, but got 2.
           " value=" + value
         );
-        const size = 2;
-        const data = new Uint8Array([
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+        var size = 2;
+        var data = new Uint8Array([
           this.slaveAddress,
           size,
           registerNumber,
           value,
         ]);
         bone.send(0x21, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.write8() result value=" + result);
             if (result[0] != size) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printWriteError(this.portNumber, this.slaveAddress);
               reject(
-                // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
                 "I2CSlaveAddress(" + this.slaveAddress + ").write8():error"
               );
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -821,18 +726,16 @@ this.portNumber}への接続に失敗しました。`,
      * @return 書き込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    write16: (registerNumber: any, value: any) => {
+    write16: (registerNumber, value) => {
       return new Promise((resolve, reject) => {
         infoLog(
           "I2CSlaveDevice.write16() registerNumber=" + registerNumber,
-          // @ts-expect-error TS(2554): Expected 1 arguments, but got 2.
           " value=" + value
         );
-        const value_L = value & 0x00ff;
-        const value_H = (value >> 8) & 0x00ff;
-        const size = 3;
-        const data = new Uint8Array([
-          // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
+        var value_L = value & 0x00ff;
+        var value_H = (value >> 8) & 0x00ff;
+        var size = 3;
+        var data = new Uint8Array([
           this.slaveAddress,
           size,
           registerNumber,
@@ -840,21 +743,18 @@ this.portNumber}への接続に失敗しました。`,
           value_H,
         ]);
         bone.send(0x21, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.write16() result value=" + result);
             if (result[0] != size) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printWriteError(this.portNumber, this.slaveAddress);
               reject(
-                // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
                 "I2CSlaveAddress(" + this.slaveAddress + ").write16():error"
               );
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -869,21 +769,19 @@ this.portNumber}への接続に失敗しました。`,
      */
     readByte: () => {
       return new Promise((resolve, reject) => {
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, 1]);
+        var data = new Uint8Array([this.slaveAddress, 1]);
         bone.send(0x22, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.readByte() result value=" + result);
-            const readSize = result[0];
+            var readSize = result[0];
             if (readSize == 1) {
               resolve(result[1]);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printReadError(this.portNumber, this.slaveAddress);
               reject("readByte() readSize unmatch : " + readSize);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -897,28 +795,26 @@ this.portNumber}への接続に失敗しました。`,
      * @return 読み込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    readBytes: (length: any) => {
+    readBytes: (length) => {
       return new Promise((resolve, reject) => {
         if (typeof length !== "number" || length > 127) {
           reject("readBytes() readSize error : " + length);
         }
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, length]);
+        var data = new Uint8Array([this.slaveAddress, length]);
         bone.send(0x22, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.readBytes() result value=" + result);
-            const readSize = result[0];
+            var readSize = result[0];
             if (readSize == length) {
-              let buffer = result;
+              var buffer = result;
               buffer.shift(); // readSizeを削除
               resolve(buffer);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printReadError(this.portNumber, this.slaveAddress);
               reject("readBytes() readSize unmatch : " + readSize);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -932,28 +828,24 @@ this.portNumber}への接続に失敗しました。`,
      * @return 書き込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    writeByte: (value: any) => {
+    writeByte: (value) => {
       return new Promise((resolve, reject) => {
         infoLog("I2CSlaveDevice.writeByte() value=" + value);
-        const size = 1;
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const data = new Uint8Array([this.slaveAddress, size, value]);
+        var size = 1;
+        var data = new Uint8Array([this.slaveAddress, size, value]);
         bone.send(0x21, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.writeByte() result" + result);
             if (result[0] != size) {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printWriteError(this.portNumber, this.slaveAddress);
               reject(
-                // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
                 "I2CSlaveAddress(" + this.slaveAddress + ").writeByte():error"
               );
             } else {
-              // @ts-expect-error TS(2794): Expected 1 arguments, but got 0. Did you forget to... Remove this comment to see the full error message
               resolve();
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -967,31 +859,29 @@ this.portNumber}への接続に失敗しました。`,
      * @return 書き込み結果
      * TODO: master-slave => main-sub になっているので、いずれ変えるべき？
      */
-    writeBytes: (buffer: any) => {
+    writeBytes: (buffer) => {
       return new Promise((resolve, reject) => {
         if (buffer.length == null) {
           reject("readBytes() parameter error : " + buffer);
         }
-        // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
-        const arr = [this.slaveAddress, buffer.length];
-        for (let cnt = 0; cnt < buffer.length; cnt++) {
+        var arr = [this.slaveAddress, buffer.length];
+        for (var cnt = 0; cnt < buffer.length; cnt++) {
           arr.push(buffer[cnt]);
         }
-        const data = new Uint8Array(arr);
+        var data = new Uint8Array(arr);
         bone.send(0x21, data).then(
-          (result: any) => {
+          (result) => {
             infoLog("I2CSlaveDevice.writeBytes() result value=" + result);
             if (result[0] == buffer.length) {
-              const resbuffer = result;
+              var resbuffer = result;
               resbuffer.shift(); // readSizeを削除
               resolve(resbuffer);
             } else {
-              // @ts-expect-error TS(7041): The containing arrow function captures the global ... Remove this comment to see the full error message
               printWriteError(this.portNumber, this.slaveAddress);
               reject("writeBytes() writeSize unmatch : " + result[0]);
             }
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           }
         );
@@ -1002,52 +892,46 @@ this.portNumber}への接続に失敗しました。`,
   //////////////////////////////////////////////////////////////////////////
   // navigator
 
-  // @ts-expect-error TS(2551): Property 'requestI2CAccess' does not exist on type... Remove this comment to see the full error message
   if (!navigator.requestI2CAccess) {
     /**
      * @function
      *　navigator requestI2CAccess 割当処理
      * @return 割当結果
      */
-    // @ts-expect-error TS(2551): Property 'requestI2CAccess' does not exist on type... Remove this comment to see the full error message
     navigator.requestI2CAccess = () => {
       return new Promise((resolve, reject) => {
         //      console.dir(bone);
         bone
           .waitConnection()
           .then(() => {
-            // @ts-expect-error TS(7009): 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
-            const i2cAccess = new I2CAccess();
+            var i2cAccess = new I2CAccess();
             infoLog("I2CAccess.resolve");
             resolve(i2cAccess);
           })
-          .catch((e: any) => {
+          .catch((e) => {
             reject(e);
           });
       });
     };
   }
 
-  // @ts-expect-error TS(2551): Property 'requestGPIOAccess' does not exist on typ... Remove this comment to see the full error message
   if (!navigator.requestGPIOAccess) {
     /**
      * @function
      *　navigator requestGPIOAccess 割当処理
      * @return 割当結果
      */
-    // @ts-expect-error TS(2551): Property 'requestGPIOAccess' does not exist on typ... Remove this comment to see the full error message
     navigator.requestGPIOAccess = () => {
       return new Promise((resolve, reject) => {
         //      console.dir(bone);
         bone
           .waitConnection()
           .then(() => {
-            // @ts-expect-error TS(7009): 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
-            const gpioAccess = new GPIOAccess();
+            var gpioAccess = new GPIOAccess();
             infoLog("gpioAccess.resolve");
             resolve(gpioAccess);
           })
-          .catch((e: any) => {
+          .catch((e) => {
             reject(e);
           });
       });
@@ -1063,7 +947,7 @@ this.portNumber}への接続に失敗しました。`,
  * @param {number} ms - milliseconds to wait
  * @return {Promise} A promise to be resolved after ms milliseconds later.
  */
-function sleep(ms: any) {
+function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });

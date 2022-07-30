@@ -6,11 +6,17 @@
     "access": "public"
   },
   "scripts": {
-    "jsdoc": "rm -rf ../../docs/ && jsdoc -d ../../docs polyfill.js README.md"
+    "jsdoc": "rm -rf ../../docs/ && jsdoc -d ../../docs polyfill.js README.md",
+    "migrate": "npx ts-migrate-full ../polyfill",
+    "build": "npx tsc polyfill.ts",
+    "build:d": "npx tsc -P tsconfig.json --emitDeclarationOnly"
   },
   "devDependencies": {
     "jsdoc": "^3.6.7",
     "ts-migrate": "^0.1.30",
     "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
   }
 }
