@@ -43,7 +43,7 @@ EOF"
 # sudo sh -c "cat << EOF > /etc/apt/sources.list
 # deb mirror+file:/etc/apt/mirrors.txt buster main contrib non-free rpi
 # EOF"
-sudo apt-get update
+sudo apt-get -y update --fix-missing
 
 # 必要な項目をインストール
 sudo apt-get install at-spi2-core
