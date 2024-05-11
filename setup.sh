@@ -33,32 +33,32 @@ EOF"
 # Rasbian OS バージョン
 RASPIAN_OS_VERSION="2024-03-15"
 
-# 32bit ミラーサイト
-sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
-  "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
-  "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
-  "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
-  "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
-EOF"
-
-
-# 64bit ミラーサイト
+# # 32bit ミラーサイト
 # sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
-#   "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-#   "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-#   "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-#   "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+#   "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
+#   "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
+#   "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
+#   "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
 # EOF"
 
-# オリジナルの sources.list ファイルを保存
-if [ ! -f /etc/apt/sources.list.orig ]; then
-  sudo cp /etc/apt/sources.list /etc/apt/sources.list.orig
-fi
 
-# sources.list ファイルを更新
-sudo sh -c "cat << EOF > /etc/apt/sources.list
-deb mirror+file:/etc/apt/mirrors.txt buster main contrib non-free rpi
-EOF"
+# # 64bit ミラーサイト
+# # sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
+# #   "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+# #   "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+# #   "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+# #   "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+# # EOF"
+
+# # オリジナルの sources.list ファイルを保存
+# if [ ! -f /etc/apt/sources.list.orig ]; then
+#   sudo cp /etc/apt/sources.list /etc/apt/sources.list.orig
+# fi
+
+# # sources.list ファイルを更新
+# sudo sh -c "cat << EOF > /etc/apt/sources.list
+# deb mirror+file:/etc/apt/mirrors.txt buster main contrib non-free rpi
+# EOF"
 
 # パッケージリストを更新
 sudo apt-get update
