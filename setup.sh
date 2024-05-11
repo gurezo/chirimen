@@ -63,11 +63,11 @@ sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code 
 sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
 sudo apt-get -y autoremove
 
-# # Node.jsのバージョンの差異による不具合を防ぐ目的
-# sudo apt-mark hold nodejs
+# Node.jsのバージョンの差異による不具合を防ぐ目的
+sudo apt-mark hold nodejs
 
-# # 利用者のNode.jsのバージョン管理目的
-# sudo npm i n -g
+# 利用者のNode.jsのバージョン管理目的
+sudo npm i n -g
 
 # # 日本語設定
 # # デフォルトの設定が en_GB.UTF-8 になっている
