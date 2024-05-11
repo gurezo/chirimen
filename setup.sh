@@ -92,11 +92,11 @@ sudo raspi-config nonint do_configure_keyboard jp
 # Wi-Fi設定
 sudo raspi-config nonint do_wifi_country JP
 
-# # VSCode extension
-# sudo npm i eslint prettier -g
-# code --install-extension MS-CEINTL.vscode-language-pack-ja
-# code --install-extension dbaeumer.vscode-eslint
-# code --install-extension esbenp.prettier-vscode
+# VSCode extension
+sudo npm i eslint prettier -g
+code --install-extension MS-CEINTL.vscode-language-pack-ja
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension esbenp.prettier-vscode
 
 # # VSCode設定
 # mkdir -p /home/pi/.config/Code/User
