@@ -295,4 +295,4 @@ done
 # 最後にダイアログをOKにしてrebootして完了
 ####
 
-sudo reboot
+# sudo reboot
