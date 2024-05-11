@@ -112,11 +112,11 @@ sudo apt-get -y autoremove
 sudo apt-get -y autoclean
 
 
-# Node.jsのバージョンの差異による不具合を防ぐ目的
-sudo apt-mark hold nodejs
+# # Node.jsのバージョンの差異による不具合を防ぐ目的
+# sudo apt-mark hold nodejs
 
-# 利用者のNode.jsのバージョン管理目的
-sudo npm i n -g
+# # 利用者のNode.jsのバージョン管理目的
+# sudo npm i n -g
 
 # # 日本語設定
 # # デフォルトの設定が en_GB.UTF-8 になっている
