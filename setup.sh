@@ -89,8 +89,8 @@ sudo raspi-config nonint do_change_timezone Asia/Tokyo
 # キーボード設定
 sudo raspi-config nonint do_configure_keyboard jp
 
-# # Wi-Fi設定
-# sudo raspi-config nonint do_wifi_country JP
+# Wi-Fi設定
+sudo raspi-config nonint do_wifi_country JP
 
 # # VSCode extension
 # sudo npm i eslint prettier -g
