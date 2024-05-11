@@ -57,7 +57,7 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 
 # 各種ツールをインストール
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
 # インストール失敗しやすいので2回
 sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
