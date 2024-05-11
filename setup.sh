@@ -34,36 +34,21 @@ EOF"
 RASPIAN_OS_VERSION="2024-03-15"
 
 # 32bit ミラーサイト
-MIRRORS_32BIT=(
+sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
   "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
   "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
   "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
   "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-armhf/"
-)
+EOF"
+
 
 # 64bit ミラーサイト
-MIRRORS_64BIT=(
-  "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-  "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-  "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-  "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
-)
-
-# ミラーサイトファイルを作成
-if [ ! -f /etc/apt/mirrors.txt ]; then
-  echo "# aptミラーサイト" > /etc/apt/mirrors.txt
-fi
-
-# ミラーサイトを追加
-for mirror in "${MIRRORS_32BIT[@]}"; do
-  echo 'for 32bit mirror site'
-  echo "$mirror" >> /etc/apt/mirrors.txt
-done
-
-for mirror in "${MIRRORS_64BIT[@]}"; do
-  echo 'for 64bit mirror site'
-  echo "$mirror" >> /etc/apt/mirrors.txt
-done
+# sudo sh -c "cat << EOF > /etc/apt/mirrors.txt
+#   "http://ftp.jaist.ac.jp/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+#   "http://ftp.tsukuba.wide.ad.jp/Linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+#   "http://ftp.yz.yamagata-u.ac.jp/pub/linux/raspbian/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+#   "http://raspbian.raspberrypi.org/raspbian/dists/$RASPIAN_OS_VERSION/buster/main/binary-arm64/"
+# EOF"
 
 # オリジナルの sources.list ファイルを保存
 if [ ! -f /etc/apt/sources.list.orig ]; then
