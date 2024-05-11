@@ -83,8 +83,8 @@ sudo sed 's/#\sja_JP\.UTF-8\sUTF-8/ja_JP\.UTF-8 UTF-8/g' /etc/locale.gen  |\
 sudo locale-gen ja_JP.UTF-8
 sudo update-locale LANG=ja_JP.UTF-8
 
-# # 時間設定
-# sudo raspi-config nonint do_change_timezone Asia/Tokyo
+# 時間設定
+sudo raspi-config nonint do_change_timezone Asia/Tokyo
 
 # # キーボード設定
 # sudo raspi-config nonint do_configure_keyboard jp
