@@ -61,7 +61,12 @@ curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
 # インストール失敗しやすいので2回
 sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
+
+# 不要パッケージ削除
 sudo apt-get -y autoremove
+
+# 不要パッケージクリーニング
+sudo apt-get -y autoclean
 
 # npm の最新版をインストール
 sudo npm install -g npm@latest
