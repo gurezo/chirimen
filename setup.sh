@@ -163,10 +163,10 @@ mkdir /home/pi/.config/chromium/Default/
 cp /home/pi/_gc/bookmark/Bookmarks /home/pi/.config/chromium/Default/Bookmarks
 pcmanfm --set-wallpaper /home/pi/_gc/wallpaper/wallpaper-720P.png
 
-# # Web Bluetooth有効化
-# cat << EOF > '/home/pi/.config/chromium/Local State'
-# {"browser":{"enabled_labs_experiments":["enable-experimental-web-platform-features"]}}
-# EOF
+# Web Bluetooth有効化
+cat << EOF > '/home/pi/.config/chromium/Local State'
+{"browser":{"enabled_labs_experiments":["enable-experimental-web-platform-features"]}}
+EOF
 
 # # gc設定
 # chromium-browser &
