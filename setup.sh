@@ -64,7 +64,7 @@ sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code 
 sudo apt-get -y autoremove
 
 # npm の最新版をインストール
-npm install -g npm@latest
+sudo npm install -g npm@latest
 
 # Node.jsのバージョンの差異による不具合を防ぐ目的
 sudo apt-mark hold nodejs
