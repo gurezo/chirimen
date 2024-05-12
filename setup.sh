@@ -158,8 +158,8 @@ if [ $? = 1 ]; then
     echo "@reboot sudo -u pi /home/pi/_gc/srv/startup.sh" | crontab
 fi
 ln -s /home/pi/_gc/srv/reset.sh /home/pi/Desktop/reset.sh
-mkdir /home/pi/.config/chromium/
-mkdir /home/pi/.config/chromium/Default/
+# mkdir /home/pi/.config/chromium/
+# mkdir /home/pi/.config/chromium/Default/
 cp /home/pi/_gc/bookmark/Bookmarks /home/pi/.config/chromium/Default/Bookmarks
 pcmanfm --set-wallpaper /home/pi/_gc/wallpaper/wallpaper-720P.png
 
