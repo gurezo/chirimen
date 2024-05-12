@@ -188,6 +188,7 @@ EOF
 # sleep 120s
 
 # Apache設定
+echo 'Apache設定 @@@@@@@@@@@@@@@@@@@@@@@@@'
 if [ ! -f /etc/apache2/sites-available/000-default.conf.orig ]; then
     sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.orig
 fi
@@ -286,11 +287,14 @@ sudo sh -c 'cat << EOF > /etc/apache2/sites-available/vhost-ssl.conf
 </IfModule>
 EOF'
 
+echo 'apache2 restart @@@@@@@@@@@@@@@@@@@@@@@@@'
+
 sudo a2ensite vhost-ssl
 sudo a2enmod ssl
 sudo systemctl restart apache2
 
 # 証明書追加
+echo '証明書追加 @@@@@@@@@@@@@@@@@@@@@@@@@'
 certfile="/home/pi/_gc/srv/crt/ca.crt"
 certname="org-TripArts"
 
