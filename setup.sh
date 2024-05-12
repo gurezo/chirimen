@@ -114,14 +114,14 @@ cat << EOF > /home/pi/.vscode/argv.json
 }
 EOF
 
-# # JSのデフォルトをVSCodeに
-# cat << EOF > /home/pi/.config/mimeapps.list
-# [Added Associations]
-# application/javascript=code.desktop;
+# JSのデフォルトをVSCodeに
+cat << EOF > /home/pi/.config/mimeapps.list
+[Added Associations]
+application/javascript=code.desktop;
 
-# [Default Applications]
-# application/javascript=code.desktop;
-# EOF
+[Default Applications]
+application/javascript=code.desktop;
+EOF
 
 # # カメラを有効化
 # sudo raspi-config nonint do_camera 0
