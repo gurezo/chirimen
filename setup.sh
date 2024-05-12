@@ -123,16 +123,16 @@ application/javascript=code.desktop;
 application/javascript=code.desktop;
 EOF
 
-# # カメラを有効化
-# sudo raspi-config nonint do_camera 0
-# grep 'bcm2835-v4l2' /etc/modprobe.d/bcm2835-v4l2.conf
-# if [ $? -ge 1 ]; then
-#     echo 'options bcm2835-v4l2 gst_v4l2src_is_broken=1' | sudo tee -a /etc/modprobe.d/bcm2835-v4l2.conf
-# fi
-# grep 'bcm2835-v4l2' /etc/modules-load.d/modules.conf
-# if [ $? -ge 1 ]; then
-#     echo 'bcm2835-v4l2' | sudo tee -a /etc/modules-load.d/modules.conf
-# fi
+# カメラを有効化
+sudo raspi-config nonint do_camera 0
+grep 'bcm2835-v4l2' /etc/modprobe.d/bcm2835-v4l2.conf
+if [ $? -ge 1 ]; then
+    echo 'options bcm2835-v4l2 gst_v4l2src_is_broken=1' | sudo tee -a /etc/modprobe.d/bcm2835-v4l2.conf
+fi
+grep 'bcm2835-v4l2' /etc/modules-load.d/modules.conf
+if [ $? -ge 1 ]; then
+    echo 'bcm2835-v4l2' | sudo tee -a /etc/modules-load.d/modules.conf
+fi
 
 # # I2Cを有効化
 # sudo raspi-config nonint do_i2c 0
