@@ -134,8 +134,8 @@ if [ $? -ge 1 ]; then
     echo 'bcm2835-v4l2' | sudo tee -a /etc/modules-load.d/modules.conf
 fi
 
-# I2Cを有効化
-sudo raspi-config nonint do_i2c 0
+# # I2Cを有効化
+# sudo raspi-config nonint do_i2c 0
 
 # # _gc設定
 # cd /home/pi/
