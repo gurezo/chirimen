@@ -6,10 +6,8 @@
     "access": "public"
   },
   "scripts": {
+    "build": "npx tsc src/polyfill.ts",
     "jsdoc": "rm -rf ../../docs/ && jsdoc -d ../../docs polyfill.js README.md"
-  },
-  "devDependencies": {
-    "jsdoc": "^3.6.7"
   },
   "dependencies": {
     "@types/node": "^20.12.8",
@@ -19,7 +17,10 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
-    "typedoc": "^0.25.13",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.3",
+    "typedoc": "^0.25.13"
   }
 }
