@@ -20,7 +20,5 @@ export function errLog(error: any): void {
  * @return {Promise} A promise to be resolved after ms milliseconds later.
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, ms);
-  });
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
