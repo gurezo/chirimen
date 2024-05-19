@@ -189,6 +189,10 @@ EOF
 
 # Apache設定
 echo 'Apache設定 @@@@@@@@@@@@@@@@@@@@@@@@@'
+
+# localhost ディレクトリのアクセス権限変更
+sudo chmod +w /home/pi/Desktop/gc
+
 if [ ! -f /etc/apache2/sites-available/000-default.conf.orig ]; then
     sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.orig
 fi
