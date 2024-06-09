@@ -5,26 +5,37 @@
 # chmod 777 setup.sh
 # ./setup.sh
 #
+sudo apt-get -y update --fix-missing
 
-# 日本語設定
-# デフォルトの設定が en_GB.UTF-8 になっている
-sudo sed 's/#\sen_GB\.UTF-8\sUTF-8/en_GB\.UTF-8 UTF-8/g' /etc/locale.gen |\
-    sudo tee /tmp/locale && sudo cat /tmp/locale |\
-    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
-sudo sed 's/#\sja_JP\.EUC-JP\sEUC-JP/ja_JP\.EUC-JP EUC-JP/g' /etc/locale.gen  |\
-    sudo tee /tmp/locale && sudo cat /tmp/locale |\
-    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
-sudo sed 's/#\sja_JP\.UTF-8\sUTF-8/ja_JP\.UTF-8 UTF-8/g' /etc/locale.gen  |\
-    sudo tee /tmp/locale && sudo cat /tmp/locale |\
-    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
-sudo locale-gen ja_JP.UTF-8
-sudo update-locale LANG=ja_JP.UTF-8
+# 必要な項目をインストール
+sudo apt-get install at-spi2-core
 
-# 時間設定
-sudo raspi-config nonint do_change_timezone Asia/Tokyo
+# update
+sudo apt-get -y update
+sudo apt-get -y upgrade
 
-# キーボード設定
-sudo raspi-config nonint do_configure_keyboard jp
+# raspiはupgrade失敗しやすいので念の為2回
+sudo apt-get -y update
+sudo apt-get -y upgrade
 
-# Wi-Fi設定
-sudo raspi-config nonint do_wifi_country JP
+# 各種ツールをインストール
+curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
+
+# # インストール失敗しやすいので2回
+# sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
+
+# 不要パッケージ削除
+sudo apt-get -y autoremove
+
+# 不要パッケージクリーニング
+sudo apt-get -y autoclean
+
+# npm の最新版をインストール
+sudo npm install -g npm@latest
+
+# Node.jsのバージョンの差異による不具合を防ぐ目的
+sudo apt-mark hold nodejs
+
+# 利用者のNode.jsのバージョン管理目的
+sudo npm i n -g

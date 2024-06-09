@@ -5,37 +5,27 @@
 # chmod 777 setup.sh
 # ./setup.sh
 #
-sudo apt-get -y update --fix-missing
+# 一時的にスリープを無効
+sudo xset s off
+sudo xset -dpms
+sudo xset s noblank
+# スリープを無効
+grep 'consoleblank=0' /boot/cmdline.txt
+if [ $? -ge 1 ]; then
+    sudo sed '1s/$/ consoleblank=0/' /boot/cmdline.txt |\
+        sudo tee /tmp/cmdline && sudo cat /tmp/cmdline |\
+        sudo tee /boot/cmdline.txt && sudo rm -f /tmp/cmdline
+fi
 
-# 必要な項目をインストール
-sudo apt-get install at-spi2-core
-
-# update
-sudo apt-get -y update
-sudo apt-get -y upgrade
-
-# raspiはupgrade失敗しやすいので念の為2回
-sudo apt-get -y update
-sudo apt-get -y upgrade
-
-# 各種ツールをインストール
-curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
-
-# # インストール失敗しやすいので2回
-# sudo apt-get -y install fonts-noto-cjk uim uim-mozc nodejs apache2 arduino code vim emacs libnss3-tools
-
-# 不要パッケージ削除
-sudo apt-get -y autoremove
-
-# 不要パッケージクリーニング
-sudo apt-get -y autoclean
-
-# npm の最新版をインストール
-sudo npm install -g npm@latest
-
-# Node.jsのバージョンの差異による不具合を防ぐ目的
-sudo apt-mark hold nodejs
-
-# 利用者のNode.jsのバージョン管理目的
-sudo npm i n -g
+if [ ! -f /etc/xdg/lxsession/LXDE-pi/autostart.orig ]; then
+    sudo cp /etc/xdg/lxsession/LXDE-pi/autostart /etc/xdg/lxsession/LXDE-pi/autostart.orig
+fi
+sudo sh -c "cat << EOF > /etc/xdg/lxsession/LXDE-pi/autostart
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@xscreensaver -no-splash
+@xset s off
+@xset -dpms
+@xset s noblank
+@/usr/bin/chromium-browser https://localhost/top
+EOF"

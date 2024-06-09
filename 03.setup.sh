@@ -6,33 +6,25 @@
 # ./setup.sh
 #
 
-# VSCode extension
-sudo npm i eslint prettier -g
-code --install-extension MS-CEINTL.vscode-language-pack-ja
-code --install-extension dbaeumer.vscode-eslint
-code --install-extension esbenp.prettier-vscode
+# 日本語設定
+# デフォルトの設定が en_GB.UTF-8 になっている
+sudo sed 's/#\sen_GB\.UTF-8\sUTF-8/en_GB\.UTF-8 UTF-8/g' /etc/locale.gen |\
+    sudo tee /tmp/locale && sudo cat /tmp/locale |\
+    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
+sudo sed 's/#\sja_JP\.EUC-JP\sEUC-JP/ja_JP\.EUC-JP EUC-JP/g' /etc/locale.gen  |\
+    sudo tee /tmp/locale && sudo cat /tmp/locale |\
+    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
+sudo sed 's/#\sja_JP\.UTF-8\sUTF-8/ja_JP\.UTF-8 UTF-8/g' /etc/locale.gen  |\
+    sudo tee /tmp/locale && sudo cat /tmp/locale |\
+    sudo tee /etc/locale.gen && sudo rm -f /tmp/locale
+sudo locale-gen ja_JP.UTF-8
+sudo update-locale LANG=ja_JP.UTF-8
 
-# VSCode設定
-mkdir -p /home/pi/.config/Code/User
-cat << EOF > /home/pi/.config/Code/User/settings.json
-{
-  "editor.fontFamily": "'Noto Sans Mono CJK JP', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
-}
-EOF
-mkdir -p /home/pi/.vscode
-cat << EOF > /home/pi/.vscode/argv.json
-{
-  "locale": "ja"
-}
-EOF
+# 時間設定
+sudo raspi-config nonint do_change_timezone Asia/Tokyo
 
-# JSのデフォルトをVSCodeに
-cat << EOF > /home/pi/.config/mimeapps.list
-[Added Associations]
-application/javascript=code.desktop;
+# キーボード設定
+sudo raspi-config nonint do_configure_keyboard jp
 
-[Default Applications]
-application/javascript=code.desktop;
-EOF
+# Wi-Fi設定
+sudo raspi-config nonint do_wifi_country JP
