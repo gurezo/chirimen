@@ -1,10 +1,4 @@
 #!/bin/bash
-#
-# cd /home/pi/
-# wget -O setup.sh https://raw.githubusercontent.com/chirimen-oh/chirimen/master/setup.sh
-# chmod 777 setup.sh
-# ./setup.sh
-#
 
 # VSCode extension
 sudo npm i eslint prettier -g

@@ -1,10 +1,5 @@
 #!/bin/bash
-#
-# cd /home/pi/
-# wget -O setup.sh https://raw.githubusercontent.com/chirimen-oh/chirimen/master/setup.sh
-# chmod 777 setup.sh
-# ./setup.sh
-#
+
 # 一時的にスリープを無効
 sudo xset s off
 sudo xset -dpms

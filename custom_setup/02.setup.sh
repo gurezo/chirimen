@@ -1,10 +1,6 @@
 #!/bin/bash
-#
-# cd /home/pi/
-# wget -O setup.sh https://raw.githubusercontent.com/chirimen-oh/chirimen/master/setup.sh
-# chmod 777 setup.sh
-# ./setup.sh
-#
+
+# ローカル環境のインデックスファイルが、サーバ上のインデックスファイルより古くても、無視して最後まで処理を続ける
 sudo apt-get -y update --fix-missing
 
 # 必要な項目をインストール

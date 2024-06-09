@@ -1,10 +1,4 @@
 #!/bin/bash
-#
-# cd /home/pi/
-# wget -O setup.sh https://raw.githubusercontent.com/chirimen-oh/chirimen/master/setup.sh
-# chmod 777 setup.sh
-# ./setup.sh
-#
 
 # 日本語設定
 # デフォルトの設定が en_GB.UTF-8 になっている
