@@ -1,6 +1,7 @@
 import { WebSocketRouter } from "../websocket/websocket-router";
+import { IGPIOPort } from "./gpio-port.interface";
 
-export class GPIOPort {
+export class GPIOPort implements IGPIOPort {
   constructor(
     private router: WebSocketRouter,
     private portNumber: number,

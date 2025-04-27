@@ -1,7 +1,9 @@
 import { WebSocketRouter } from "../websocket/websocket-router";
+import { IGPIOAccess } from "./gpio-access.interface";
 import { GPIOPort } from "./gpio-port";
+import { IGPIOPort } from "./gpio-port.interface";
 
-export class GPIOAccess {
+export class GPIOAccess implements IGPIOAccess {
   private router: WebSocketRouter;
   private ports: Map<number, GPIOPort> = new Map();
 
@@ -14,7 +16,7 @@ export class GPIOAccess {
    * GPIOポートを取得
    * @param portNumber ポート番号
    */
-  public async getPort(portNumber: number): Promise<GPIOPort> {
+  public async getPort(portNumber: number): Promise<IGPIOPort> {
     await this.router.waitConnection();
 
     if (!this.ports.has(portNumber)) {

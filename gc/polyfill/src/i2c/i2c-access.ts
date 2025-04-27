@@ -1,7 +1,9 @@
 import { WebSocketRouter } from "../websocket/websocket-router";
+import { II2CAccess } from "./i2c-access.interface";
 import { I2CPort } from "./i2c-port";
+import { II2CPort } from "./i2c-port.interface";
 
-export class I2CAccess {
+export class I2CAccess implements II2CAccess {
   private router: WebSocketRouter;
   private ports: Map<number, I2CPort> = new Map();
 
@@ -14,7 +16,7 @@ export class I2CAccess {
    * I2Cポートを取得
    * @param portNumber ポート番号
    */
-  public async getPort(portNumber: number): Promise<I2CPort> {
+  public async getPort(portNumber: number): Promise<II2CPort> {
     await this.router.waitConnection();
 
     if (!this.ports.has(portNumber)) {

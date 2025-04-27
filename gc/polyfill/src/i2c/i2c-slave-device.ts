@@ -1,6 +1,7 @@
 import { WebSocketRouter } from "../websocket/websocket-router";
+import { II2CSlaveDevice } from "./i2c-slave-device.interface";
 
-export class I2CSlaveDevice {
+export class I2CSlaveDevice implements II2CSlaveDevice {
   constructor(
     private router: WebSocketRouter,
     private portNumber: number,
